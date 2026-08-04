@@ -67,7 +67,7 @@ def adicionar():
                     "ingredientes": rIngredientes,
                     "descrição": rDescricao
                 })
-                print(f"===Prato com número identificar '{rId}' e nome '{rNome}' adicionado ao cardápio.===")
+                print(f"===Prato com número identificador '{rId}' e nome '{rNome}' adicionado ao cardápio.===")
                 print("=================================================================================\n")
                 savedoc()
         else:
@@ -183,7 +183,7 @@ def alter():
                 if nome_prato == prato["nome"]:
                     found = True
                     key = input("===Qual chave do prato deseja alterar?===\n===Escolha um número:===\n"
-                    "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n============="
+                    "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n=============\n"
                     "===Ou digite qualquer outro comando para retornar===\n=============")
                     att(key, prato)
             if not found:
@@ -197,7 +197,8 @@ def alter():
                 if id_prato == prato["identificação"]:
                     found = True
                     key = input("===Qual chave do prato deseja alterar?===\n===Escolha um número:===\n"
-                    "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n=============\n")
+                    "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n=============\n"
+                    "===Ou digite qualquer outro comando para retornar===\n=============")
                     att(key, prato)
             if not found:
                 print(f"===Prato com nome '{id_prato}' não consta no cardápio.===")
@@ -257,7 +258,7 @@ while True:
     # A variável options permite navegar pelas funções do CRUD:
     options = input("Bem-vindo ao sistema de cardápio do Coffee Shops Tia Rosa\n"
     "Escolha um número de '1' a '6':\n"
-    "1. Adicionar prato ao cardápio;\n2. Procurar item no cardápio;\n3. Alterar dados de prato do cardápio;\n"
+    "1. Adicionar prato ao cardápio;\n2. Procurar prato no cardápio;\n3. Alterar dados de prato do cardápio;\n"
     "4. Remover prato do cardápio;\n5. Mostrar cardápio;\n6. Fechar sistema.\n")
     
     if options == "1":
