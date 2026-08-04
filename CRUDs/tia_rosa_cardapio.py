@@ -11,10 +11,10 @@ def savedoc():
     with open("cardapiotr.txt", "w") as doc:
         for prato in cardapio:
             doc.write(
-                f"{prato['identificação']},"
-                f"{prato['nome']},"
-                f"{prato['preço']},"
-                f"{prato['ingredientes']},"
+                f"{prato['identificação']};"
+                f"{prato['nome']};"
+                f"{prato['preço']};"
+                f"{prato['ingredientes']};"
                 f"{prato['descrição']}\n"
             )
 # Lista que receberá os dicionários de cada prato.
@@ -22,7 +22,7 @@ cardapio =[]
 # Bloco de código que faz tratamento do dados no arquivo para serem inseridos na lista:
 with open("cardapiotr.txt", "r") as doc:
     for line in doc:
-        rId, rNome, rPreco, rIngredientes, rDescricao = line.split(",")
+        rId, rNome, rPreco, rIngredientes, rDescricao = line.split(";")
         rDescricao = rDescricao.strip()
 
         cardapio.append({
@@ -67,7 +67,7 @@ def adicionar():
                     "ingredientes": rIngredientes,
                     "descrição": rDescricao
                 })
-                print(f"===Prato com número identificar {rId} e nome {rNome} adicionado ao cardápio.===")
+                print(f"===Prato com número identificar '{rId}' e nome '{rNome}' adicionado ao cardápio.===")
                 print("=================================================================================\n")
                 savedoc()
         else:
@@ -183,7 +183,8 @@ def alter():
                 if nome_prato == prato["nome"]:
                     found = True
                     key = input("===Qual chave do prato deseja alterar?===\n===Escolha um número:===\n"
-                    "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n=============\n")
+                    "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n============="
+                    "===Ou digite qualquer outro comando para retornar===\n=============")
                     att(key, prato)
             if not found:
                 print(f"===Prato com nome '{nome_prato}' não consta no cardápio.===")
@@ -199,7 +200,7 @@ def alter():
                     "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n=============\n")
                     att(key, prato)
             if not found:
-                print(f"===Prato com nome '{nome_prato}' não consta no cardápio.===")
+                print(f"===Prato com nome '{id_prato}' não consta no cardápio.===")
                 print("=========================================================\n")
         elif loc == "0":
                 back()
