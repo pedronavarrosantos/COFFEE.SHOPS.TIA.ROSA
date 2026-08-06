@@ -23,9 +23,10 @@ Professor: Francisco Filho
 
 > Em desenvolvimento.
 
-- [ ] Gerenciamento de produtos
-- [ ] Cadastro de clientes
-- [ ] Gerenciamento de pedidos
-- [ ] Controle de estoque
+- ⏳ Cadastro de clientes
+- ⏳ Gerenciamento de pedidos
+- ⏳ Controle de estoque
 
 > Finalizadas.
+
+- ✅ Gerenciamento de produtos

@@ -1,6 +1,6 @@
 """
 === CRUD do cardápio do Coffee Shop da Tia Rosa. ===
--> O sistema conterá funções para o seguinte: Adicionar, procurar, alterar ou remover prato, impressão de todos os 
+-> O sistema tem o seguinte: Adiciona pratos, procura pratos, altera pratos, remove pratos, impressão de todos os 
 pratos do cardápio e impressão dos ingredientes de um prato.
 
 -> Os pratos serão armazenados em dicionários com 5 chaves: nome, id (número identificador do prato), preço, ingredientes e descrição
@@ -37,9 +37,9 @@ def savedoc():
             )
 # Função 'invalid()' emite texto padrão em caso de invalidez de input, recebe como parâmetro a variável 'escolha', ou 'loc' ou 'options':
 def invalid(escolha):
-    print("=======================================")
-    print(f"== O comando {escolha} não é válido. ==")
-    print("===============================")
+    print("=================================")
+    print(f"== O comando '{escolha}' não é válido. ==")
+    print("=================================")
 # Função 'back()' emite texto padrão para informar ao usuário que o programa está retornando ao menu principal:
 def back():
     print("=================")
@@ -58,7 +58,6 @@ def positiveOnly():
 # Função que adiciona pratos ao cardápio:
 def adicionar():
     while True:
-
         rId = int(input("===================================================================\n"
         "== Digite o número de identificação do prato ou 0 para retornar: ==\n"
         "===================================================================\n"))
@@ -74,15 +73,15 @@ def adicionar():
                     print("================================================\n")
                     break
             else:
-                rNome = input("Digite o nome do prato:\n")
-                rPreco = float(input("Digite o preço do prato:\n"))
+                rNome = input("== Digite o nome do prato: ==\n")
+                rPreco = float(input("== Digite o preço do prato: ==\n"))
 
                 if rPreco < 0:
                     positiveOnly()
                     continue
-                ingredientes = input("Digite os ingredientes:\n")
+                ingredientes = input("== Digite os ingredientes: ==\n")
                 rIngredientes = "'" + ingredientes + "'"
-                descricao = input("Digite a descrição do prato:\n")
+                descricao = input("== Digite a descrição do prato: ==\n")
                 rDescricao = "'" + descricao + "'"
 
                 cardapio.append({
@@ -92,7 +91,8 @@ def adicionar():
                     "ingredientes": rIngredientes,
                     "descrição": rDescricao
                 })
-                print(f"===Prato com número identificador '{rId}' e nome '{rNome}' adicionado ao cardápio.===")
+                print("=================================================================================")
+                print(f"== Prato com número identificador '{rId}' e nome '{rNome}' adicionado ao cardápio. ==")
                 print("=================================================================================\n")
                 savedoc()
         else:
@@ -109,28 +109,30 @@ def procurar():
 
             for prato in cardapio:
                 if nome_prato == prato["nome"]:
-                    print(f"===Identificação: {prato['identificação']};===\n===Nome: {prato['nome']};===\n===Preço: {prato['preço']};==="
-                    f"\n===Ingredientes: {prato['ingredientes']};===\n===Descrição: {prato['descrição']}.===")
+                    print(f"== Identificação: {prato['identificação']}; ==\n== Nome: {prato['nome']}; ==\n== Preço: {prato['preço']}; =="
+                    f"\n== Ingredientes: {prato['ingredientes']}; ==\n== Descrição: {prato['descrição']}. ==")
                     print("======================")
 
                     found = True
                     break
             if not found:
-                        print("== Prato não encontrado. ==")
-                        print("===========================\n")
+                print("===========================")
+                print("== Prato não encontrado. ==")
+                print("===========================\n")
         elif escolha == "2":
             id_prato = int(input("Digite o número de indentificação do prato:\n"))
             for prato in cardapio:
                 if id_prato == prato["identificação"]:
                     print(f"== Identificação: {prato['identificação']}; ==\n== Nome: {prato['nome']}; ==\n== Preço: {prato['preço']}; =="
-                    f"\n== Ingredientes: {prato['ingredientes']};===\n===Descrição: {prato['descrição']}. ==")
+                    f"\n== Ingredientes: {prato['ingredientes']}; ==\n== Descrição: {prato['descrição']}. ==")
                     print("======================")
 
                     found = True
                     break
             if not found:
-                        print("== Prato não encontrado. ==")
-                        print("===========================\n")
+                print("===========================")
+                print("== Prato não encontrado. ==")
+                print("===========================\n")
         elif escolha == "0":
             back()
             break
@@ -143,7 +145,7 @@ def att(key, prato):
     while True:
         if  key == "1":
             print(f"== No momento a key 'número de identificação' tem valor {prato['identificação']} ==")
-            newKey = int(input("== Digite no novo valor da key 'identificação'. ==\n"))
+            newKey = int(input("== Digite o novo valor da key 'identificação'. ==\n"))
             
             if newKey < 0:
                 positiveOnly()
@@ -157,6 +159,7 @@ def att(key, prato):
                 if outro_prato != prato:
                     if newKey == outro_prato["identificação"]:
                         found = True
+                        print("==================================================================================")
                         print("== Outro prato já possui o número de identificação que você está tentando usar. ==")
                         print("==================================================================================")
                         continue
@@ -170,7 +173,7 @@ def att(key, prato):
                 break
         elif  key == "2":
             print(f"== No momento a key 'nome' tem valor {prato['nome']} ==")
-            newKey = input("== Digite no novo valor da key 'nome'. ==\n")
+            newKey = input("== Digite o novo valor da key 'nome'. ==\n")
             prato.update({
                 "nome": newKey
             })
@@ -180,7 +183,7 @@ def att(key, prato):
             break
         elif  key == "3":
             print(f"== No momento a key 'preço' tem valor {prato['preço']} ==")
-            newKey = float(input("== Digite no novo valor da key 'preço'. ==\n"))
+            newKey = float(input("== Digite o novo valor da key 'preço'. ==\n"))
 
             if newKey < 0:
                 positiveOnly()
@@ -194,7 +197,7 @@ def att(key, prato):
             break
         elif  key == "4":
             print(f"== No momento a key 'ingredientes' tem valor {prato['ingredientes']} ==")
-            newKey = input("== Digite no novo valor da key 'ingredientes'. ==\n")
+            newKey = input("== Digite o novo valor da key 'ingredientes'. ==\n")
             prato.update({
                 "ingredientes": newKey
             })
@@ -204,7 +207,7 @@ def att(key, prato):
             break
         elif  key == "5":
             print(f"== No momento a key 'descrição' tem valor {prato['descrição']} ==")
-            newKey = input("== Digite no novo valor da key 'descrição'. ==\n")
+            newKey = input("== Digite o novo valor da key 'descrição'. ==\n")
             prato.update({
                 "descrição": newKey
             })
@@ -214,13 +217,13 @@ def att(key, prato):
             break
             
         else:
-            print(f"== O valor {key} é inválido. ==")
-            print("=================================")
-            continue
+            invalid(key)
+            break
 # Função 'alter()' consegue manipular valores das chaves dos dicionários de cada prato e imprimir a alteração diretamente no documento do 'cardapiotr,txt':
 def alter():
     while True:
-        loc = input("== Deseja localizar o prato pelo nome ou número de identificação? ==\n Escolha um número:\n 1. Nome;\n 2. Número de identificação.\n"
+        loc = input("== Para realizar alteração, localize o prato por seu nome ou número de identificação: ==\n"
+        "Escolha um número:\n 1. Nome;\n 2. Número de identificação.\n"
             "Ou digite '0' para retornar.\n===========================\n")
 
         if loc == "1":
@@ -232,14 +235,15 @@ def alter():
                     found = True
                     key = input("== Qual chave do prato deseja alterar? ==\n== Escolha um número: ==\n"
                     "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n=============\n"
-                    "== Ou digite qualquer outro comando para retornar ==\n=============")
+                    "== Ou digite qualquer outro comando para retornar ==\n=============\n")
                     att(key, prato)
                     break
             if not found:
+                print("=========================================================")
                 print(f"== Prato com nome '{nome_prato}' não consta no cardápio. ==")
                 print("=========================================================\n")
         elif loc == "2":
-            id_prato = int(input("===Digite o número de identificação:===\n"))
+            id_prato = int(input("== Digite o número de identificação: ==\n"))
             found = False
 
             for prato in cardapio:
@@ -251,8 +255,9 @@ def alter():
                     att(key, prato)
                     break
             if not found:
-                print(f"== Prato com nome '{id_prato}' não consta no cardápio. ==")
-                print("=========================================================\n")
+                print("==================================================================")
+                print(f"== Prato com número identificador '{id_prato}' não consta no cardápio. ==")
+                print("==================================================================\n")
         elif loc == "0":
                 back()
                 break
@@ -267,7 +272,7 @@ def remover():
             back()
             break
         elif escolha == "1":
-            nome_prato = input("Digite o nome do prato:\n")
+            nome_prato = input("== Digite o nome do prato: ==\n")
             found = False
 
             for prato in cardapio:
@@ -276,15 +281,17 @@ def remover():
 
                     cardapio.remove(prato)
 
+                    print("===================================")
                     print(f"== Prato {nome_prato} removido. ==")
                     print("===================================\n")
                     savedoc()
                     break
             if not found:
+                print("=================================================================")
                 print(f"== Prato com nome '{nome_prato}' já não existia no cardápio. ==")
                 print("=================================================================\n")
         elif escolha == "2":
-            id_prato = int(input("Digite o número de identificação do prato:\n"))
+            id_prato = int(input("== Digite o número de identificação do prato: ==\n"))
             found = False
 
             for prato in cardapio:
@@ -293,11 +300,13 @@ def remover():
 
                     cardapio.remove(prato)
 
+                    print("==================================")
                     print(f"== Prato {id_prato} removido. ==")
                     print("==================================\n")
                     savedoc()
                     break
             if not found:
+                print("==================================================================================")
                 print(f"== Prato com número de identificação '{id_prato}' já não existia no cardápio. ==")
                 print("==================================================================================\n")
         else:
