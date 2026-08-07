@@ -219,7 +219,7 @@ def att(key, prato):
         else:
             invalid(key)
             break
-# Função 'alter()' consegue manipular valores das chaves dos dicionários de cada prato e imprimir a alteração diretamente no documento do 'cardapiotr,txt':
+# Função 'alter()' consegue manipular valores das chaves dos dicionários de cada prato e imprimir a alteração diretamente no documento do 'cardapiotr.txt':
 def alter():
     while True:
         loc = input("== Para realizar alteração, localize o prato por seu nome ou número de identificação: ==\n"

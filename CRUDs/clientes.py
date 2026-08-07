@@ -52,6 +52,11 @@ def back():
     linhaIgual("== Retornando. ==")
     print("== Retornando. ==")
     linhaIgual("== Retornando. ==")
+# Função 'positiveOnly()' emite texto padrão quando o usuário tenta atribuir valor negativo a uma chave que só aceita valores positivos:
+def positiveOnly():
+    print("===================================================")
+    print("== Essa variável aceita apenas valores positivos ==")
+    print("===================================================\n")
 # Função 'invalid()' emite texto padrão em caso de invalidez de input:
 def invalid(options):
     linhaIgual(f"== O comando '{options}' não é válido. ==")
@@ -181,32 +186,38 @@ def att(key, cliente):
     while True:
         if  key == "2":
             print(f"== No momento a key 'número de identificação' tem valor {cliente['clienteID']} ==")
-            newKey = int(input("== Digite o novo valor da key 'clienteID'. ==\n"))
-            
-            if newKey < 0:
-                positiveOnly()
+            try:
+                newKey = int(input("== Digite o novo valor da key 'clienteID'. ==\n"))
+            except ValueError:
+                linhaIgual("== Você digitou um valor inválido para a key. ==")
+                print("== Você digitou um valor inválido para a key. ==")
+                linhaIgual("== Você digitou um valor inválido para a key. ==")
                 continue
-            found = False
+            else:
+                if newKey < 0:
+                    positiveOnly()
+                    continue
+                found = False
 
-            # O 'for'abaixo existe para evitar que, durante uma reatribuição da chave 'clienteID', clientes fiquem com números identificadores repetidos.
-            # O 'for' precisa ter uma variável diferente de 'cliente', uma vez que a função já recebe um valor para essa variável, 
-            # para isso, utiliza-se 'outro_cliente":
-            for outro_cliente in clientes:
-                if outro_cliente != cliente:
-                    if newKey == outro_cliente["clienteID"]:
-                        found = True
-                        print("==================================================================================")
-                        print("== Outro cliente já possui o número de identificação que você está tentando usar. ==")
-                        print("==================================================================================")
-                        continue
-            if not found:
-                cliente.update({
-                    "clienteID": newKey
-                })
-                savedoc()
-                print(cliente)
-                changedKey()
-                break
+                # O 'for'abaixo existe para evitar que, durante uma reatribuição da chave 'clienteID', clientes fiquem com números identificadores repetidos.
+                # O 'for' precisa ter uma variável diferente de 'cliente', uma vez que a função já recebe um valor para essa variável, 
+                # para isso, utiliza-se 'outro_cliente":
+                for outro_cliente in clientes:
+                    if outro_cliente != cliente:
+                        if newKey == outro_cliente["clienteID"]:
+                            found = True
+                            print("==================================================================================")
+                            print("== Outro cliente já possui o número de identificação que você está tentando usar. ==")
+                            print("==================================================================================")
+                            continue
+                if not found:
+                    cliente.update({
+                        "clienteID": newKey
+                    })
+                    savedoc()
+                    print(cliente)
+                    changedKey()
+                    break
         elif  key == "1":
             print(f"== No momento a key 'clienteNom' tem valor {cliente['clienteNom']} ==")
             newKey = input("== Digite o novo valor da key 'clienteNom'. ==\n")
@@ -219,55 +230,95 @@ def att(key, cliente):
             break
         elif  key == "3":
             print(f"== No momento a key 'telefone' tem valor {cliente['telefone']} ==")
-            newKey = float(input("== Digite o novo valor da key 'telefone'. ==\n"))
+            newKey = input("== Digite o novo valor da key 'telefone'. ==\n")
 
-            if newKey < 0:
-                positiveOnly()
-                continue
-            cliente.update({
-                "telefone": newKey
-            })
-            savedoc()
-            print(cliente)
-            changedKey()
-            break
+            if newKey.isdigit() == True and (len(newKey) == 9 or len(newKey) == 11):
+                cliente.update({
+                    "telefone": newKey
+                })
+                savedoc()
+                print(cliente)
+                changedKey()
+                break
+            else:
+                    linhaIgual("== Número de telefone inválido ==")
+                    print("== Número de telefone inválido ==")
+                    linhaIgual("== Número de telefone inválido ==")
+                    continue
         elif  key == "4":
             print(f"== No momento a key 'e-mail' tem valor {cliente['e-mail']} ==")
             newKey = input("== Digite o novo valor da key 'e-mail'. ==\n")
-            cliente.update({
-                "e-mail": newKey
-            })
-            savedoc()
-            print(cliente)
-            changedKey()
-            break
+
+            if "@" in newKey and newKey[0] != "@" and newKey.endswith(".com") == True:
+                found = False
+
+                for cliente in clientes:
+                    if newKey == cliente['e-mail']:
+                        found = True
+
+                        linhaIgual("== Este e-mail já está em uso. ==")
+                        print("== Este e-mail já está em uso. ==")
+                        linhaIgual("== Este e-mail já está em uso. ==")
+                        break
+                if not found:
+                    cliente.update({
+                        "e-mail": newKey
+                    })
+                    savedoc()
+                    print(cliente)
+                    changedKey()
+                    break
+            else:
+                    linhaIgual("== E-mail inválido ==")
+                    print("== E-mail inválido ==")
+                    linhaIgual("== E-mail inválido ==")
         elif  key == "5":
             print(f"== No momento a key 'cpf' tem valor {cliente['cpf']} ==")
             newKey = input("== Digite o novo valor da key 'cpf'. ==\n")
-            cliente.update({
-                "cpf": newKey
-            })
-            savedoc()
-            print(cliente)
-            changedKey()
-            break
+            
+            if newKey.isdigit() == True and len(newKey) == 11:
+                found = False
+
+                for cliente in clientes:
+                    if newKey == cliente['cpf']:
+                        found = True
+
+                        linhaIgual("== Este CPF já está em uso. ==")
+                        print("== Este CPF já está em uso. ==")
+                        linhaIgual("== Este CPF já está em uso. ==")
+                        break
+                if not found:
+                    cliente.update({
+                        "cpf": newKey
+                    })
+                    savedoc()
+                    print(cliente)
+                    changedKey()
+                    break
+            else:
+                linhaIgual("== CPF inválido ==")
+                print("== CPF inválido ==")
+                linhaIgual("== CPF inválido ==")
+                continue
         elif  key == "6":
             print(f"== No momento a key 'pontos' tem valor {cliente['pontos']} ==")
             try:
-                newKey = input("== Digite o novo valor da key 'pontos'. ==\n")
+                newKey = int(input("== Digite o novo valor da key 'pontos'. ==\n"))
             except ValueError:
                 linhaIgual("== Você digitou um valor inválido para a key. ==")
                 print("== Você digitou um valor inválido para a key. ==")
                 linhaIgual("== Você digitou um valor inválido para a key. ==")
                 continue
-            cliente.update({
-                "pontos": newKey
-            })
-            savedoc()
-            print(cliente)
-            changedKey()
-            break
-            
+            if newKey < 0:
+                positiveOnly()
+            else:
+                cliente.update({
+                    "pontos": newKey
+                })
+                savedoc()
+                print(cliente)
+                changedKey()
+                break
         else:
             invalid(key)
             break
@@ -295,21 +346,27 @@ def alter():
                 print(f"== Cliente com nome '{nome_cliente}' não consta no cardápio. ==")
                 print("=========================================================\n")
         elif loc == "2":
-            id_cliente = int(input("== Digite o número de identificação: ==\n"))
-            found = False
+            try:
+                id_cliente = int(input("== Digite o número de identificação: ==\n"))
+            except ValueError:
+                linhaIgual("== Você digitou um valor inválido para o campo. ==")
+                print("== Você digitou um valor inválido para o campo. ==")
+                linhaIgual("== Você digitou um valor inválido para o campo. ==")
+            else:
+                found = False
 
-            for cliente in clientes:
-                if id_cliente == cliente["clienteID"]:
-                    found = True
-                    key = input("== Qual chave do cliente deseja alterar? ==\n== Escolha um número: ==\n"
-                    "1. Nome\n2. Número identificador\n3. Telefone\n4. E-mail\n5. CPF.\n6. Pontos.\n=============\n"
-                    "== Ou digite qualquer outro comando para retornar ==\n=============\n")
-                    att(key, cliente)
-                    break
-            if not found:
-                print("==================================================================")
-                print(f"== Cliente com número identificador '{id_cliente}' não consta no cardápio. ==")
-                print("==================================================================\n")
+                for cliente in clientes:
+                    if id_cliente == cliente["clienteID"]:
+                        found = True
+                        key = input("== Qual chave do cliente deseja alterar? ==\n== Escolha um número: ==\n"
+                        "1. Nome\n2. Número identificador\n3. Telefone\n4. E-mail\n5. CPF.\n6. Pontos.\n=============\n"
+                        "== Ou digite qualquer outro comando para retornar ==\n=============\n")
+                        att(key, cliente)
+                        break
+                if not found:
+                    print("==================================================================")
+                    print(f"== Cliente com número identificador '{id_cliente}' não consta no cardápio. ==")
+                    print("==================================================================\n")
         elif loc == "0":
                 back()
                 break
