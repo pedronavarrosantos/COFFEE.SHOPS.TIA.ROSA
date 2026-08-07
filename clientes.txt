@@ -1,0 +1,2 @@
+pedro;1;6100000000;p.d@teste.com;11100011100;0
+qwert;2;6212345678;qwert@tchum.com;98712365401;0
