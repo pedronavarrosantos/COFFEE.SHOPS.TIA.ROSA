@@ -23,10 +23,10 @@ Professor: Francisco Filho
 
 > Em desenvolvimento.
 
-- ⏳ Cadastro de clientes
 - ⏳ Gerenciamento de pedidos
-- ⏳ Controle de estoque
 
 > Finalizadas.
 
 - ✅ Gerenciamento de produtos
+- ✅ Cadastro de clientes
+- ✅ Controle de estoque
