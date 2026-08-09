@@ -209,7 +209,7 @@ def att(key, cliente):
                             print("==================================================================================")
                             print("== Outro cliente já possui o número de identificação que você está tentando usar. ==")
                             print("==================================================================================")
-                            continue
+                            break
                 if not found:
                     cliente.update({
                         "clienteID": newKey
@@ -232,7 +232,7 @@ def att(key, cliente):
             print(f"== No momento a key 'telefone' tem valor {cliente['telefone']} ==")
             newKey = input("== Digite o novo valor da key 'telefone'. ==\n")
 
-            if newKey.isdigit() == True and (len(newKey) == 9 or len(newKey) == 11):
+            if newKey.isdigit() == True and len(newKey) <= 11 and len(newKey) >= 9:
                 cliente.update({
                     "telefone": newKey
                 })
@@ -252,14 +252,15 @@ def att(key, cliente):
             if "@" in newKey and newKey[0] != "@" and newKey.endswith(".com") == True:
                 found = False
 
-                for cliente in clientes:
-                    if newKey == cliente['e-mail']:
-                        found = True
+                for outro_cliente in clientes:
+                    if outro_cliente is not cliente:
+                        if newKey == cliente['e-mail']:
+                            found = True
 
-                        linhaIgual("== Este e-mail já está em uso. ==")
-                        print("== Este e-mail já está em uso. ==")
-                        linhaIgual("== Este e-mail já está em uso. ==")
-                        break
+                            linhaIgual("== Este e-mail já está em uso. ==")
+                            print("== Este e-mail já está em uso. ==")
+                            linhaIgual("== Este e-mail já está em uso. ==")
+                            break
                 if not found:
                     cliente.update({
                         "e-mail": newKey
@@ -400,7 +401,12 @@ def remover():
                 print(f"== Cliente com nome '{nome_cliente}' já não existia entre os clientes. ==")
                 print("=================================================================\n")
         elif escolha == "2":
-            id_cliente = int(input("== Digite o número de identificação do cliente: ==\n"))
+            try:
+                id_cliente = int(input("== Digite o número de identificação do cliente: ==\n"))
+            except ValueError:
+                linhaIgual("== Você digitou um valor inválido para a key. ==")
+                print("== Você digitou um valor inválido para a key. ==")
+                linhaIgual("== Você digitou um valor inválido para a key. ==")
             found = False
 
             for cliente in clientes:
