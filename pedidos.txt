@@ -1,4 +1,4 @@
 100;3;misto-quente,cookie com chocolate,croissant de queijo,cafe expresso;21x2,43x1,31x2,1x2;56.0;em andamento
 101;4;coxinha de frango,chocolate quente;33x2,9x1;26.0;em andamento
-102;4;cheesecake de frutas vermelhas,iced latte,bolo de cenoura,cafe expresso;41x1,12x1,37x1,1x1;39.0;em andamento
+102;4;cheesecake de frutas vermelhas,iced latte,bolo de cenoura;41x1,12x2,37x1;45.0;cancelado
 103;4;torta de maca,milkshake de chocolate,sanduiche caprese,sanduiche caprese;44x1,14x1,25x1,25x1;67.0;feito
