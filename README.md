@@ -15,14 +15,14 @@ Professor: Francisco Filho
 1. Cardápio com descrição dos pratos;
 2. Sistemas CRUD's de estoque de ingredientes e cadastro dos clientes;
 3. Sistema de numeração de pedidos para formação de histórico juntamente com os produtos selecionados em cada pedido.
-> As funcionalidades do sistema devem ser simples para que os colaboradores consigo se familiarizar rapidamente.
-
+> As funcionalidades do sistema devem ser simples para que os colaboradores consigam se familiarizar rapidamente.
 > Precisa ajudar na fidelização dos clientes.
 
 ## ☕ Funcionalidades
 
 > Em desenvolvimento.
 
+- ⏳ Menu principal
 - ⏳ Gerenciamento de pedidos
 
 > Finalizadas.

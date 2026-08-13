@@ -9,22 +9,26 @@
 # Lista que receberá os dicionários de cada cliente.
 clientes =[]
 # Bloco de código que faz tratamento do dados no arquivo para serem inseridos na lista:
-with open("clientes.txt", "r") as doc:
-    for line in doc:
-        user, userID, nTel, e_mail, cpf, points = line.split(";")
-        userID = int(userID)
-        points = int(points)
-        nTel = str(nTel)
-        cpf = str(cpf)
+try:
+    with open("clientes.txt", "r") as doc:
+        for line in doc:
+            user, userID, nTel, e_mail, cpf, points = line.split(";")
+            userID = int(userID)
+            points = int(points)
+            nTel = str(nTel)
+            cpf = str(cpf)
 
-        clientes.append({
-            "clienteNom": user,
-            "clienteID": userID,
-            "telefone": nTel,
-            "e-mail": e_mail,
-            "cpf": cpf,
-            "pontos": points # Ao criar um novo cliente, o valor da chave pontos sempre será 0.
-        })
+            clientes.append({
+                "clienteNom": user,
+                "clienteID": userID,
+                "telefone": nTel,
+                "e-mail": e_mail,
+                "cpf": cpf,
+                "pontos": points # Ao criar um novo cliente, o valor da chave pontos sempre será 0.
+            })
+except FileNotFoundError:
+    with open("clientes.txt", "w") as doc:
+        pass
 # Função 'changedKey()' emite texto padrão quando uma chave é alterada dentro da função 'att(key, cliente)':
 def changedKey():
     print("=================================")
@@ -68,69 +72,56 @@ def adicionar():
         user = str(input("==================================================\n"
         "== Digite o nome do cliente ou 0 para retornar: ==\n"
         "==================================================\n"))
-        if user != "0":
-            try:
-                userID = int(input("===============================================\n"
-                "== Digite o número identificador do cliente: ==\n"
-                "===============================================\n"))
-            except ValueError:
-                linhaIgual("== ID inválido. Digite apenas números. ==")
-                print("== ID inválido. Digite apenas números. ==")
-                linhaIgual("== ID inválido. Digite apenas números. ==")
-                continue
 
-            for cliente in clientes:
-                    if userID == int(cliente["clienteID"]):
-                        print("=========================================================")
-                        print("== Já existe um cliente com esse número identificador. ==")
-                        print("=========================================================\n")
-                        break
-            else:
-                nTel = input("=================================\n"
-                "== Digite o número do cliente: ==\n"
+        
+        if user != "0":
+            userID = clientes[-1]['clienteID'] + 1
+
+            nTel = input("=============================================\n"
+            "== Digite o número de telefone do cliente: ==\n"
+            "=============================================\n")
+
+            if nTel.isdigit() == True and (len(nTel) == 9 or len(nTel) == 11):
+                e_mail = input("=================================\n"
+                "== Digite o e-mail do cliente: ==\n"
                 "=================================\n")
 
-                if nTel.isdigit() == True and (len(nTel) == 9 or len(nTel) == 11):
-                    e_mail = input("=================================\n"
-                    "== Digite o e-mail do cliente: ==\n"
-                    "=================================\n")
+                if "@" in e_mail and e_mail[0] != "@" and e_mail.endswith(".com") == True:
+                    cpf = input("==============================\n"
+                    "== Digite o CPF do cliente: ==\n"
+                    "==============================\n")
 
-                    if "@" in e_mail and e_mail[0] != "@" and e_mail.endswith(".com") == True:
-                        cpf = input("==============================\n"
-                        "== Digite o CPF do cliente: ==\n"
-                        "==============================\n")
-
-                        if cpf.isdigit() == True and len(cpf) == 11:
-                            points = 0
-                        else:
-                            linhaIgual("== CPF inválido ==")
-                            print("== CPF inválido ==")
-                            linhaIgual("== CPF inválido ==")
-                            continue
+                    if cpf.isdigit() == True and len(cpf) == 11:
+                        points = 0
                     else:
-                        linhaIgual("== E-mail inválido== ")
-                        print("== E-mail inválido== ")
-                        linhaIgual("== E-mail inválido== ")
+                        linhaIgual("== CPF inválido ==")
+                        print("== CPF inválido ==")
+                        linhaIgual("== CPF inválido ==")
                         continue
                 else:
-                    linhaIgual("== Número de telefone inválido ==")
-                    print("== Número de telefone inválido ==")
-                    linhaIgual("== Número de telefone inválido ==")
+                    linhaIgual("== E-mail inválido== ")
+                    print("== E-mail inválido== ")
+                    linhaIgual("== E-mail inválido== ")
                     continue
+            else:
+                linhaIgual("== Número de telefone inválido ==")
+                print("== Número de telefone inválido ==")
+                linhaIgual("== Número de telefone inválido ==")
+                continue
                     
 
-                clientes.append({
-                    "clienteNom": user,
-                    "clienteID": userID,
-                    "telefone": nTel,
-                    "e-mail": e_mail,
-                    "cpf": cpf,
-                    "pontos": points
-                })
-                linhaIgual(f"== Cliente com número identificador '{userID}' e nome '{user}' adicionado. ==")
-                print(f"== Cliente com número identificador '{userID}' e nome '{user}' adicionado. ==")
-                linhaIgual(f"== Cliente com número identificador '{userID}' e nome '{user}' adicionado. ==")
-                savedoc()
+            clientes.append({
+                "clienteNom": user,
+                "clienteID": userID,
+                "telefone": nTel,
+                "e-mail": e_mail,
+                "cpf": cpf,
+                "pontos": points
+            })
+            linhaIgual(f"== Cliente com número identificador '{userID}' e nome '{user}' adicionado. ==")
+            print(f"== Cliente com número identificador '{userID}' e nome '{user}' adicionado. ==")
+            linhaIgual(f"== Cliente com número identificador '{userID}' e nome '{user}' adicionado. ==")
+            savedoc()
         else:
             back()
             break

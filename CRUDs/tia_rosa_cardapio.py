@@ -9,20 +9,24 @@ pratos do cardápio e impressão dos ingredientes de um prato.
 # Lista que receberá os dicionários de cada prato.
 cardapio =[]
 # Bloco de código que faz tratamento do dados no arquivo para serem inseridos na lista:
-with open("cardapiotr.txt", "r") as doc:
-    for line in doc:
-        rId, rNome, rPreco, rIngredientes, rDescricao = line.split(";")
-        rId = int(rId)
-        rPreco = float(rPreco)
-        rDescricao = rDescricao.strip()
+try:
+    with open("cardapiotr.txt", "r") as doc:
+        for line in doc:
+            rId, rNome, rPreco, rIngredientes, rDescricao = line.split(";")
+            rId = int(rId)
+            rPreco = float(rPreco)
+            rDescricao = rDescricao.strip()
 
-        cardapio.append({
-            "identificação": rId,
-            "nome": rNome,
-            "preço": rPreco,
-            "ingredientes": rIngredientes,
-            "descrição": rDescricao
-        })
+            cardapio.append({
+                "identificação": rId,
+                "nome": rNome,
+                "preço": rPreco,
+                "ingredientes": rIngredientes,
+                "descrição": rDescricao
+            })
+except FileNotFoundError:
+    with open("cardapiotr.txt", "w") as doc:
+        pass
 
 # Função que salva ou cria o documento caso ele ainda não exista:
 def savedoc():
