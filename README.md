@@ -23,10 +23,10 @@ Professor: Francisco Filho
 > Em desenvolvimento.
 
 - ⏳ Menu principal
-- ⏳ Gerenciamento de pedidos
 
 > Finalizadas.
 
 - ✅ Gerenciamento de produtos
 - ✅ Cadastro de clientes
 - ✅ Controle de estoque
+- ✅ Gerenciamento de pedidos
