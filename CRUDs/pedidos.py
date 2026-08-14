@@ -71,6 +71,18 @@ def savedoc_estoque():
     with open("estoque.txt", "w") as doc:
         for item in estoque:
             doc.write(f"{item['id']};{item['ingrediente']};{item['quantidade']}\n")
+# Função 'savedoc_clientes()' salva a lista 'clientes' em 'clientes.txt' (mesmo formato usado em clientes.py):
+def savedoc_clientes():
+    with open("clientes.txt", "w") as doc:
+        for cliente in clientes:
+            doc.write(
+                f"{cliente['clienteNom']};"
+                f"{cliente['clienteID']};"
+                f"{cliente['telefone']};"
+                f"{cliente['e-mail']};"
+                f"{cliente['cpf']};"
+                f"{cliente['pontos']}\n"
+            )
 # Abertura de arquivo, lista e transformação de conteúdo em dicionário do sistema de pedidos:
 pedidos = []
 
@@ -247,21 +259,45 @@ def adicionar():
         id_pedido = 100
     else:
         id_pedido = pedidos[-1]["id"] + 1
- 
-    pedidos.append({
-        "id": id_pedido,
-        "cliente": cliente_encontrado["clienteID"],
-        "pratos": pratos_pedido,
-        "id_pratos": id_pratos_pedido,
-        "preço": preco_total,
-        "situação": "em andamento"
-    })
-    savedoc_pedidos()
- 
-    linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
-    print(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
-    linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
+    
+    if cliente_encontrado["pontos"] < 5:
+        pedidos.append({
+            "id": id_pedido,
+            "cliente": cliente_encontrado["clienteID"],
+            "pratos": pratos_pedido,
+            "id_pratos": id_pratos_pedido,
+            "preço": preco_total,
+            "situação": "em andamento"
+        })
+        savedoc_pedidos()
+    
+        linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
+        print(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
+        linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
+    else:
+        preco_descontado = preco_total * 0.85
+        pedidos.append({
+            "id": id_pedido,
+            "cliente": cliente_encontrado["clienteID"],
+            "pratos": pratos_pedido,
+            "id_pratos": id_pratos_pedido,
+            "preço": preco_descontado,
+            "situação": "em andamento"
+        })
+        savedoc_pedidos()
 
+        cliente_encontrado.update({
+            "pontos": cliente_encontrado["pontos"] - 5
+        })
+        savedoc_clientes()
+
+        valor_desc = preco_total - preco_descontado
+    
+        linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
+        print(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_descontado:.2f} ==")
+        linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
+        print(f"== Esse pedido teve o desconto de fidelidade. ==\n == Valor sem desconto R$ {preco_total:.2f} Valor com desconto R$ {preco_descontado:.2f} ==\n"
+        f"Valor do desconto: R$ {valor_desc:.2f}.")
 # A 'função buscar_prato()' serve para buscar um prato no cardápio por nome ou identificação:
 def buscar_prato(produto_input):
     for prato in cardapio:
@@ -269,12 +305,10 @@ def buscar_prato(produto_input):
             return prato
     else:
         return None
- 
 # A função 'fragmentar_ingredientes()' fragmenta a chave "ingredientes" de um prato:
 def fragmentar_ingredientes(prato):
     fragmentos = prato["ingredientes"].split(",")
     return [frag.strip().strip("'") for frag in fragmentos]
- 
 # A função 'verificar_estoque()' verifica se o estoque atual aguenta tirar 'quantidade' unidades de cada ingrediente da lista.
 # Retorna uma lista de (ingrediente, disponível) para os que faltam; lista vazia = estoque ok.
 def verificar_estoque(fragmentos, quantidade):
@@ -288,27 +322,23 @@ def verificar_estoque(fragmentos, quantidade):
         disponivel = item_estoque["quantidade"] if item_estoque else 0
         if quantidade > disponivel:
             faltando.append((frag, disponivel))
-    return faltando
- 
+    return faltando 
 # A função 'ajustar_estoque()' desconta 'quantidade' unidades de cada ingrediente da lista de fragmentos (usa número negativo para devolver):
 def ajustar_estoque(fragmentos, quantidade):
     for frag in fragmentos:
         for item in estoque:
             if item["ingrediente"] == frag:
                 item["quantidade"] -= quantidade
- 
 # A função 'buscar_prato_por_id()' localiza, no cardápio, o prato de identificação 'id_prato' (usado pra reler pratos já salvos em 'id_pratos'):
 def buscar_prato_por_id(id_prato):
     for prato in cardapio:
         if prato["identificação"] == id_prato:
             return prato
     return None
- 
 # Mostra os pratos de um pedido numerados, pra o usuário escolher a linha em remoção/alteração:
 def listar_pratos_do_pedido(pedido):
     for i, idp in enumerate(pedido["id_pratos"]):
         print(f"  {i + 1}. {pedido['pratos'][i]} ({idp})")
- 
 # Pede ao usuário o número da linha (1, 2, 3...) de um prato dentro do pedido e devolve o índice (0, 1, 2...).
 # Devolve None se o usuário cancelar ('0') ou digitar algo inválido.
 def escolher_linha_do_pedido(pedido):
@@ -330,9 +360,7 @@ def escolher_linha_do_pedido(pedido):
     if indice < 0 or indice >= len(pedido["id_pratos"]):
         print("== Número de linha inválido. ==")
         return None
- 
     return indice
- 
 # A função 'adicionar_prato_ao_pedido()' insere um novo prato num pedido já existente:
 def adicionar_prato_ao_pedido(pedido):
     produto = input("Digite o nome do prato ou o seu número identificador a adicionar:\n== Ou digite '0' para cancelar. ==\n")
@@ -372,7 +400,6 @@ def adicionar_prato_ao_pedido(pedido):
     savedoc_pedidos()
  
     print(f"== '{prato['nome']}' (x{quantidade}) adicionado ao pedido nº {pedido['id']}. ==")
- 
 # Função 'remover_prato_do_pedido()' tira um prato de um pedido já existente e devolve os ingredientes ao estoque:
 def remover_prato_do_pedido(pedido):
     indice = escolher_linha_do_pedido(pedido)
@@ -395,7 +422,6 @@ def remover_prato_do_pedido(pedido):
     savedoc_pedidos()
  
     print(f"== '{nome_removido}' removido do pedido nº {pedido['id']}. ==")
- 
 # A função 'alterar_quantidade_no_pedido()' troca a quantidade de um prato que já está no pedido:
 def alterar_quantidade_no_pedido(pedido):
     indice = escolher_linha_do_pedido(pedido)
@@ -441,7 +467,6 @@ def alterar_quantidade_no_pedido(pedido):
     savedoc_pedidos()
  
     print(f"== Quantidade de '{prato['nome']}' alterada de {quantidade_antiga} para {quantidade_nova}. ==")
- 
 # A função 'modificar_pedido()' concentra a lógica do item 3 do menu: localizar o pedido e,
 # em submenu, adicionar prato, remover prato ou alterar a quantidade de um prato.
 def modificar_pedido():
@@ -498,27 +523,10 @@ def modificar_pedido():
             alterar_quantidade_no_pedido(pedido_encontrado)
         else:
             invalid(escolha)
-#No while abaixo ocorre toda a manipulação de pedidos:
-while True:
-    options = input("== Bem-vindo ao sistema de pedidos do Coffee Shops Tia Rosa! ==\n"
-    "== Escolha um número: ==\n"
-    " 1. Criar novo pedido;\n"
-    " 2. Verificar situação de pedido;\n"
-    " 3. Modificar pedido;\n"
-    " 4. Entregar pedido;\n"
-    " 5. Cancelar pedido;\n"
-    " 6. Fechar pedido;\n"
-    " 7. Sair do sistema.\n"
-    "===============================================================\n")
-
-    if options == "1":
-        adicionar()
-    elif options == "2":
-        pass
-    elif options == "3":
-        modificar_pedido()
-    elif options == "4":
-        while True:
+# A função entrega() serve para trocar a o status da chave "situação" de um dicionário específico dentre os elementos da lista 'pedidos =[]',
+# troca a "situação" de 'em andamento' para 'feito':
+def entrega():
+    while True:
             localizar_pedido = input("== Qual pedido será entregue? ==\n == Caso queira retornar ao menu principal digite '0'. ==\n")
  
             if localizar_pedido == "0":
@@ -543,9 +551,9 @@ while True:
                     break
             if not found:
                 print("== Pedido não encontrado. ==")
-    elif options == "5":
-        print("=== TESTE NOVA VERSÃO ===")
-        while True:
+# A função cancelar() serve para cancelar um pedido. Só é possível cancelar um pedido se a sua chave "situação" tiver valor 'em andamento':
+def cancelar():
+    while True:
             id_pedido = input("== Digite o número do pedido que deseja cancelar: ==\n"
                 "== Ou digite '0' para retornar. ==\n")
 
@@ -588,12 +596,35 @@ while True:
                         break
             if not found:
                 print(f"== O pedido de número {id_pedido_int} não foi encontrado. ==")
+#No while abaixo ocorre toda a manipulação de pedidos:
+while True:
+    options = input("== Bem-vindo ao sistema de pedidos do Coffee Shops Tia Rosa! ==\n"
+    "== Escolha um número: ==\n"
+    " 1. Criar novo pedido;\n"
+    " 2. Verificar situação de pedido;\n"
+    " 3. Modificar pedido;\n"
+    " 4. Entregar pedido;\n"
+    " 5. Cancelar pedido;\n"
+    " 6. Fechar pedido;\n"
+    " 7. Sair do sistema.\n"
+    "===============================================================\n")
+
+    if options == "1":
+        adicionar()
+    elif options == "2":
+        pass
+    elif options == "3":
+        modificar_pedido()
+    elif options == "4":
+        entrega()
+    elif options == "5":
+        cancelar()
     elif options == "6":
         pass
     elif options == "7":
-        print("================================================")
+        linhaIgual("== Encerrando sistema de cadastro de pedidos. ==")
         print("== Encerrando sistema de cadastro de pedidos. ==")
-        print("================================================")
+        linhaIgual("== Encerrando sistema de cadastro de pedidos. ==")
         break
     else:
         invalid(options)
