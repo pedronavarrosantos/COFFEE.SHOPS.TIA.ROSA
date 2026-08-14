@@ -4,4 +4,4 @@ lonso;3;61993673929;lonso@confe.com;01928374651;0
 Tephinha;4;61971314221;tephinha@gcloud.com;05328110162;0
 Vitor;5;61930424018;vitorms@icluod.com;10120230321;0
 Monteiro;6;21934812712;matheus@solteiro.com;06969696969;0
-Matiuza;7;00123654789;millemillemille@tiuza.com;22007001500;0
+Matiuza;7;00123654789;millemillemille@tiuza.com;22007001500;1

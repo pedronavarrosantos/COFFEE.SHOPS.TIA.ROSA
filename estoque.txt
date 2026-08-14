@@ -1,7 +1,7 @@
-10;graos de cafe;297
+10;graos de cafe;296
 1;agua;999994
 2;cafe em po;212
-3;leite;392
+3;leite;391
 4;chocolate;91
 5;canela;77
 6;chantilly;0
@@ -30,7 +30,7 @@
 29;rucula;32
 30;tomatinho;786
 31;presunto parma;47
-32;carne moida;211
+32;carne moida;210
 33;manjericao;766
 34;molho de tomate;364
 35;cebola;156
@@ -41,8 +41,8 @@
 40;pao de queijo;455
 41;requeijao;78
 42;croissant;99
-43;trigo;203
-44;frango;32
+43;trigo;200
+44;frango;30
 45;cenoura;87
 46;fuba;67
 47;milho;97

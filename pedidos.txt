@@ -2,3 +2,4 @@
 101;4;coxinha de frango,chocolate quente;33x2,9x1;26.0;cancelado
 102;4;cheesecake de frutas vermelhas,iced latte,bolo de cenoura;41x1,12x2,37x1;45.0;cancelado
 103;4;torta de maca,milkshake de chocolate,sanduiche caprese,sanduiche caprese;44x1,14x1,25x1,25x1;67.0;feito
+104;7;esfiha de carne,coxinha de frango,latte;35x1,33x2,7x1;34.0;pago

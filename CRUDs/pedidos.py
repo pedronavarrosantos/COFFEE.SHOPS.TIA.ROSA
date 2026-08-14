@@ -128,9 +128,9 @@ def invalid(y):
     linhaIgual(f"== O comando '{y}' não é válido. ==")
 # Função 'back()' emite texto padrão para informar ao usuário que o programa está retornando ao menu principal:
 def back():
-    print("=================")
+    linhaIgual("== Retornando. ==")
     print("== Retornando. ==")
-    print("=================\n")
+    linhaIgual("== Retornando. ==")
 # Função 'adicionar()' serve para adicionar pratos verificando disponibilidade de estoque.
 def adicionar():
     # A variável abaixo servirá para o caso do usuário inserir um nome ou id de usuário inválido:
@@ -596,6 +596,82 @@ def cancelar():
                         break
             if not found:
                 print(f"== O pedido de número {id_pedido_int} não foi encontrado. ==")
+# A função 'verificar()' serve para ver em qual situação se encontra um pedido:
+def verificar():
+    while True:
+        id_pedido = input("== Digite o número do pedido que deseja verificar: ==\n"
+                "== Ou digite '0' para retornar. ==\n")
+        
+        if id_pedido == "0":
+                back()
+                break
+
+        try:
+            id_pedido_int = int(id_pedido)
+        except ValueError:
+            print("== Esse campo aceita apenas números inteiros. ==")
+            continue
+
+        found = False
+
+        for pedido in pedidos:
+            if id_pedido_int == pedido["id"]:
+                found = True
+
+                print(f"== O pedido está {pedido['situação']}. ==")
+                break
+        if not found:
+            print(f"== O pedido {id_pedido} não existe. ==")
+# A função 'fechar()' serve para colocar a situação do pedido em 'feito' e adicionar 1 ponto à chave 'pontos' dos clientes:
+def fechar():
+    while True:
+        id_pedido = input("== Digite o número do pedido que deseja fechar: ==\n"
+                "== Ou digite '0' para retornar. ==\n")
+        
+        if id_pedido == "0":
+                back()
+                break
+
+        try:
+            id_pedido_int = int(id_pedido)
+        except ValueError:
+            print("== Esse campo aceita apenas números inteiros. ==")
+            continue
+
+        found = False
+
+        for pedido in pedidos:
+            if id_pedido_int == pedido["id"]:
+                found = True
+
+                if pedido["situação"] != "feito":
+                    print("== Esse pedido não pode ser pago por estar em andamento ou ter sido cancelado. ==")
+                else:
+                    estaPago = input("== O pedido foi pago? ==\n== Escolha um número: ==\n"
+                    " 1. Sim;\n"
+                    " 2. Não.\n")
+
+                    if estaPago == "1":
+                        for cliente in clientes:
+                            if cliente['clienteID'] == pedido['cliente']:
+                                cliente.update({
+                                    "pontos": cliente['pontos'] + 1
+                                })
+                                savedoc_clientes()
+
+                                pedido.update({
+                                    "situação": "pago"
+                                })
+                                savedoc_pedidos()
+
+                                print(f"== O pedido{id_pedido} está pago e finalizado. ==")
+                    elif estaPago == "2":
+                        print("== Receba o valor do pedido com o cliente. ==")
+                    else:
+                        invalid(estaPago)
+        if not found:
+            print(f"== O pedido {id_pedido} não foi encontrado. ==")
+
 #No while abaixo ocorre toda a manipulação de pedidos:
 while True:
     options = input("== Bem-vindo ao sistema de pedidos do Coffee Shops Tia Rosa! ==\n"
@@ -612,7 +688,7 @@ while True:
     if options == "1":
         adicionar()
     elif options == "2":
-        pass
+        verificar()
     elif options == "3":
         modificar_pedido()
     elif options == "4":
@@ -620,7 +696,7 @@ while True:
     elif options == "5":
         cancelar()
     elif options == "6":
-        pass
+        fechar()
     elif options == "7":
         linhaIgual("== Encerrando sistema de cadastro de pedidos. ==")
         print("== Encerrando sistema de cadastro de pedidos. ==")
