@@ -1,7 +1,9 @@
 pedro;1;6100000000;p.d@teste.com;11100011100;0
 qwert;2;6212345678;qwert@tchum.com;98712365401;0
-lonso;3;61993673929;lonso@confe.com;01928374651;0
-Tephinha;4;61971314221;tephinha@gcloud.com;05328110162;0
+lonso;3;61993673929;lonso@confe.com;01928374651;1
+Tephinha;4;61971314221;tephinha@gcloud.com;05328110162;1
 Vitor;5;61930424018;vitorms@icluod.com;10120230321;0
 Monteiro;6;21934812712;matheus@solteiro.com;06969696969;0
 Matiuza;7;00123654789;millemillemille@tiuza.com;22007001500;1
+Jean;8;61543169136;jean_james1@runescape.com;06512365492;1
+Jeane;9;61994110718;jeane@ms.com;50541166613;0

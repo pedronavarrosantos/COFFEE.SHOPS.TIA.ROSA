@@ -103,129 +103,136 @@ for prato in cardapio:
 # For fim, todo o processo de extração de dados de 'cardapiotr.txt' e impressão dos dados em 'estoque.txt' é salvo de uma vez com a chamada da função abaixo:
 savedoc()
 
-# No bloco de código abaixo se encontra o sistema de controle de quantidade em estoques:
-while True:
-    options = input("== Bem-vindo ao sistema de estoque do Coffee Shops Tia Rosa. ==\n"
-    "== Escolha um número: ==\n"
-    "1. Atualizar quantidades em estoque;\n"
-    "2. Verificar níveis de ingredientes em estoque;\n"
-    "3. Listar ingredientes do estoque;\n"
-    "4. Encerrar aplicação.\n"
-    "======================\n")
+# A função responsável por executar o sistema de estoque no arquivo 'main.py':
+def sistema_estoque():
+    # No bloco de código abaixo se encontra o sistema de controle de quantidade em estoques:
+    while True:
+        options = input("== Bem-vindo ao sistema de estoque do Coffee Shops Tia Rosa. ==\n"
+        "== Escolha um número: ==\n"
+        "1. Atualizar quantidades em estoque;\n"
+        "2. Verificar níveis de ingredientes em estoque;\n"
+        "3. Listar ingredientes do estoque;\n"
+        "4. Encerrar aplicação.\n"
+        "======================\n")
 
-    if options == "1":
-        while True:
-            escolha = input("Como deseja acessar o ingrediente?\nEscolha um número:\n1. Nome;\n2. Número de identificação.\n"
-            "== Ou digite '0' para retornar ao menu principal. ==\n"
-            "====================================================\n")
-            if escolha == "1":
-                ingNome = input("Digite o nome do ingrediente:")
-                found = False
+        if options == "1":
+            while True:
+                escolha = input("Como deseja acessar o ingrediente?\nEscolha um número:\n1. Nome;\n2. Número de identificação.\n"
+                "== Ou digite '0' para retornar ao menu principal. ==\n"
+                "====================================================\n")
+                if escolha == "1":
+                    ingNome = input("Digite o nome do ingrediente:\n")
+                    found = False
 
-                for line in ingredientes:
-                    if ingNome == line["ingrediente"]:
-                        found = True
+                    for line in ingredientes:
+                        if ingNome == line["ingrediente"]:
+                            found = True
 
-                        try:
-                            amount = int(input("Digite a quantidade disponível do ingrediente:"))
-                        except ValueError:
-                            linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
-                            print("== Você digitou um valor inválido. Digite apenas números. ==")
-                            linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
-                            continue
-                        if amount < 0:
-                            positiveOnly()
-                        else:
-                            line.update({
-                                "quantidade": amount
-                            })
-                            savedoc()
-                if not found:
-                    linhaIgual("== Ingrediente não encontrado. ==")
-                    print("== Ingrediente não encontrado. ==")
-                    linhaIgual("== Ingrediente não encontrado. ==")
-            elif escolha == "2":
-                try:
-                    ingId = int(input("Digite o número identificador do ingrediente:"))
-                except ValueError:
-                            linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
-                            print("== Você digitou um valor inválido. Digite apenas números. ==")
-                            linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
-                            continue
-                found = False
+                            try:
+                                amount = int(input("Digite a quantidade disponível do ingrediente:\n"))
+                            except ValueError:
+                                linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
+                                print("== Você digitou um valor inválido. Digite apenas números. ==")
+                                linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
+                                continue
+                            if amount < 0:
+                                positiveOnly()
+                            else:
+                                line.update({
+                                    "quantidade": amount
+                                })
+                                print(f"== Valor de {ingNome} atualizado para {amount}. ==")
+                                savedoc()
+                    if not found:
+                        linhaIgual("== Ingrediente não encontrado. ==")
+                        print("== Ingrediente não encontrado. ==")
+                        linhaIgual("== Ingrediente não encontrado. ==")
+                elif escolha == "2":
+                    try:
+                        ingId = int(input("Digite o número identificador do ingrediente:"))
+                    except ValueError:
+                                linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
+                                print("== Você digitou um valor inválido. Digite apenas números. ==")
+                                linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
+                                continue
+                    found = False
 
-                for line in ingredientes:
-                    if ingId == line["id"]:
-                        print(f"== O ingrediente com número identificador {line['id']} é o(a) {line['ingrediente']}. ==")
-                        found = True
+                    for line in ingredientes:
+                        if ingId == line["id"]:
+                            print(f"== O ingrediente com número identificador {ingId} é o(a) {line['ingrediente']}. ==")
+                            found = True
 
-                        try:
-                            amount = int(input("Digite a quantidade disponível do ingrediente:"))
-                        except ValueError:
-                            linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
-                            print("== Você digitou um valor inválido. Digite apenas números. ==")
-                            linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
-                            continue
-                        if amount < 0:
-                            positiveOnly()
-                        else:
-                            line.update({
-                                "quantidade": amount
-                            })
-                            savedoc()
-                if not found:
-                    linhaIgual("== Ingrediente não encontrado. ==")
-                    print("== Ingrediente não encontrado. ==")
-                    linhaIgual("== Ingrediente não encontrado. ==")
-            elif escolha == "0":
-                back()
-                break
-            else:
-                invalid(escolha)
-    elif options == "2":
-        while True:
-            escolha = input("Escolha uma opção:\n 1. Ver ingredientes em nível crítico;\n 2. Ver ingredientes em nível médio;\n"
-            " 3. Ver ingredientes em quantidade segura;\n 4. Ver níveis de todos os ingredientes.\n"
-            "== Ou digite '0' para retornar. ==\n"
-            "==================================\n")
-            if escolha == "1":
-                for line in ingredientes:
-                    if line["quantidade"] <= 10:
-                        if line["quantidade"] == 0:
-                            print(f"== O estoque de {line['ingrediente']} está zerado! ==\n== Dar urgência à reposição. ==")
-                        else:
-                            print(f"== O estoque de {line['ingrediente']} tem apenas {line['quantidade']} unidades! ==\n== Dar prioridade à reposição. ==")
-            elif escolha == "2":
-                for line in ingredientes:
-                    if line["quantidade"] >= 11 and line["quantidade"] <= 50:
-                        print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==\n== Reposição necessária em breve. ==")
-            elif escolha == "3":
-                for line in ingredientes:
-                    if line["quantidade"] > 50:
-                        print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==")
-            elif escolha == "4":
-                for line in ingredientes:
-                    if line["quantidade"] <= 10:
-                        if line["quantidade"] == 0:
-                            print(f"== O estoque de {line['ingrediente']} está zerado! ==\n== Dar urgência à reposição. ==")
-                        else:
-                            print(f"== O estoque de {line['ingrediente']} tem apenas {line['quantidade']} unidades! ==\n== Dar prioridade à reposição. ==")
-                    if line["quantidade"] >= 11 and line["quantidade"] <= 50:
-                        print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==\n== Reposição necessária em breve. ==")
-                    else:
-                        print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==")
-            elif escolha == "0":
+                            try:
+                                amount = int(input("Digite a quantidade disponível do ingrediente:"))
+                            except ValueError:
+                                linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
+                                print("== Você digitou um valor inválido. Digite apenas números. ==")
+                                linhaIgual("== Você digitou um valor inválido. Digite apenas números. ==")
+                                continue
+                            if amount < 0:
+                                positiveOnly()
+                            else:
+                                line.update({
+                                    "quantidade": amount
+                                })
+                                print(f"== Valor de {line["ingrediente"]} atualizado para {amount}. ==")
+                                savedoc()
+                    if not found:
+                        linhaIgual("== Ingrediente não encontrado. ==")
+                        print("== Ingrediente não encontrado. ==")
+                        linhaIgual("== Ingrediente não encontrado. ==")
+                elif escolha == "0":
                     back()
                     break
-            else:
-                invalid(escolha)
-    elif options == "3":
-        for line in ingredientes:
-            print(f"{line['id']}. {line['ingrediente']}; Quantidade: {line['quantidade']}.")
-    elif options == "4":
-        print("=====================================")
-        print("== Encerrando sistema de estoque. ==")
-        print("=====================================")
-        break
-    else:
-        invalid(options)
+                else:
+                    invalid(escolha)
+        elif options == "2":
+            while True:
+                escolha = input("Escolha uma opção:\n 1. Ver ingredientes em nível crítico;\n 2. Ver ingredientes em nível médio;\n"
+                " 3. Ver ingredientes em quantidade segura;\n 4. Ver níveis de todos os ingredientes.\n"
+                "== Ou digite '0' para retornar. ==\n"
+                "==================================\n")
+                if escolha == "1":
+                    for line in ingredientes:
+                        if line["quantidade"] <= 10:
+                            if line["quantidade"] == 0:
+                                print(f"== O estoque de {line['ingrediente']} está zerado! ==\n== Dar urgência à reposição. ==")
+                            else:
+                                print(f"== O estoque de {line['ingrediente']} tem apenas {line['quantidade']} unidades! ==\n== Dar prioridade à reposição. ==")
+                elif escolha == "2":
+                    for line in ingredientes:
+                        if line["quantidade"] >= 11 and line["quantidade"] <= 50:
+                            print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==\n== Reposição necessária em breve. ==")
+                elif escolha == "3":
+                    for line in ingredientes:
+                        if line["quantidade"] > 50:
+                            print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==")
+                elif escolha == "4":
+                    for line in ingredientes:
+                        if line["quantidade"] <= 10:
+                            if line["quantidade"] == 0:
+                                print(f"== O estoque de {line['ingrediente']} está zerado! ==\n== Dar urgência à reposição. ==")
+                            else:
+                                print(f"== O estoque de {line['ingrediente']} tem apenas {line['quantidade']} unidades! ==\n== Dar prioridade à reposição. ==")
+                        if line["quantidade"] >= 11 and line["quantidade"] <= 50:
+                            print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==\n== Reposição necessária em breve. ==")
+                        else:
+                            print(f"== O estoque de {line['ingrediente']} tem {line['quantidade']} unidades. ==")
+                elif escolha == "0":
+                        back()
+                        break
+                else:
+                    invalid(escolha)
+        elif options == "3":
+            for line in ingredientes:
+                print(f"{line['id']}. {line['ingrediente']}; Quantidade: {line['quantidade']}.")
+        elif options == "4":
+            print("=====================================")
+            print("== Encerrando sistema de estoque. ==")
+            print("=====================================")
+            break
+        else:
+            invalid(options)
+
+if __name__ == "__main__":
+    sistema_estoque()

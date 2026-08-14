@@ -296,7 +296,7 @@ def adicionar():
         linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
         print(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_descontado:.2f} ==")
         linhaIgual(f"== Pedido nº {id_pedido} criado com sucesso! Total: R$ {preco_total:.2f} ==")
-        print(f"== Esse pedido teve o desconto de fidelidade. ==\n == Valor sem desconto R$ {preco_total:.2f} Valor com desconto R$ {preco_descontado:.2f} ==\n"
+        print(f"== Esse pedido teve o desconto de fidelidade. ==\n== Valor sem desconto R$ {preco_total:.2f}, valor com desconto R$ {preco_descontado:.2f} ==\n"
         f"Valor do desconto: R$ {valor_desc:.2f}.")
 # A 'função buscar_prato()' serve para buscar um prato no cardápio por nome ou identificação:
 def buscar_prato(produto_input):
@@ -543,12 +543,16 @@ def entrega():
             for pedido in pedidos:
                 if id_pedido_busca == pedido["id"]:
                     found = True
-                    pedido.update({
-                        "situação": "feito"
-                    })
-                    savedoc_pedidos()
-                    print(f"== Pedido nº {id_pedido_busca} marcado como 'feito'. ==")
-                    break
+
+                    if pedido["situação"] == "em andamento":
+                        pedido.update({
+                            "situação": "feito"
+                        })
+                        savedoc_pedidos()
+                        print(f"== Pedido nº {id_pedido_busca} marcado como 'feito'. ==")
+                        break
+                    else:
+                        print("== O pedido não pode ser entregue por não se encontrar em fase de andamento. ==")
             if not found:
                 print("== Pedido não encontrado. ==")
 # A função cancelar() serve para cancelar um pedido. Só é possível cancelar um pedido se a sua chave "situação" tiver valor 'em andamento':
@@ -645,7 +649,7 @@ def fechar():
                 found = True
 
                 if pedido["situação"] != "feito":
-                    print("== Esse pedido não pode ser pago por estar em andamento ou ter sido cancelado. ==")
+                    print("== Esse pedido não pode ser pago por estar em andamento, já ter sido pago ou ter sido cancelado. ==")
                 else:
                     estaPago = input("== O pedido foi pago? ==\n== Escolha um número: ==\n"
                     " 1. Sim;\n"
@@ -664,7 +668,7 @@ def fechar():
                                 })
                                 savedoc_pedidos()
 
-                                print(f"== O pedido{id_pedido} está pago e finalizado. ==")
+                                print(f"== O pedido {id_pedido} está pago e finalizado. ==")
                     elif estaPago == "2":
                         print("== Receba o valor do pedido com o cliente. ==")
                     else:
@@ -672,35 +676,40 @@ def fechar():
         if not found:
             print(f"== O pedido {id_pedido} não foi encontrado. ==")
 
-#No while abaixo ocorre toda a manipulação de pedidos:
-while True:
-    options = input("== Bem-vindo ao sistema de pedidos do Coffee Shops Tia Rosa! ==\n"
-    "== Escolha um número: ==\n"
-    " 1. Criar novo pedido;\n"
-    " 2. Verificar situação de pedido;\n"
-    " 3. Modificar pedido;\n"
-    " 4. Entregar pedido;\n"
-    " 5. Cancelar pedido;\n"
-    " 6. Fechar pedido;\n"
-    " 7. Sair do sistema.\n"
-    "===============================================================\n")
+# A função responsável por executar o sistema de pedidos no arquivo 'main.py':
+def sistema_pedidos():
+    #No while abaixo ocorre toda a manipulação de pedidos:
+    while True:
+        options = input("== Bem-vindo ao sistema de pedidos do Coffee Shops Tia Rosa! ==\n"
+        "== Escolha um número: ==\n"
+        " 1. Criar novo pedido;\n"
+        " 2. Verificar situação de pedido;\n"
+        " 3. Modificar pedido;\n"
+        " 4. Entregar pedido;\n"
+        " 5. Cancelar pedido;\n"
+        " 6. Fechar pedido;\n"
+        " 7. Sair do sistema.\n"
+        "===============================================================\n")
 
-    if options == "1":
-        adicionar()
-    elif options == "2":
-        verificar()
-    elif options == "3":
-        modificar_pedido()
-    elif options == "4":
-        entrega()
-    elif options == "5":
-        cancelar()
-    elif options == "6":
-        fechar()
-    elif options == "7":
-        linhaIgual("== Encerrando sistema de cadastro de pedidos. ==")
-        print("== Encerrando sistema de cadastro de pedidos. ==")
-        linhaIgual("== Encerrando sistema de cadastro de pedidos. ==")
-        break
-    else:
-        invalid(options)
+        if options == "1":
+            adicionar()
+        elif options == "2":
+            verificar()
+        elif options == "3":
+            modificar_pedido()
+        elif options == "4":
+            entrega()
+        elif options == "5":
+            cancelar()
+        elif options == "6":
+            fechar()
+        elif options == "7":
+            linhaIgual("== Encerrando sistema de cadastro de pedidos. ==")
+            print("== Encerrando sistema de cadastro de pedidos. ==")
+            linhaIgual("== Encerrando sistema de cadastro de pedidos. ==")
+            break
+        else:
+            invalid(options)
+
+if __name__ == "__main__":
+    sistema_pedidos()

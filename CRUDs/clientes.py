@@ -417,30 +417,35 @@ def remover():
                 print("==================================================================================\n")
         else:
             invalid(escolha)
-# Bloco de código que contem todas as funcionalidades do CRUD:
-while True:
-    # A variável options permite navegar pelas funções do CRUD:
-    options = input("Bem-vindo ao sistema de cadastro de clientes do Coffee Shops Tia Rosa\n"
-    "Escolha um número de '1' a '6':\n"
-    "1. Adicionar cliente;\n2. Procurar cliente;\n3. Alterar dados de cliente;\n"
-    "4. Remover cliente;\n5. Mostrar lista de clientes;\n6. Fechar sistema.\n")
-    
-    if options == "1":
-        adicionar()
-    elif options == "2":
-        procurar()
-    elif options == "3":
-        alter()
-    elif options == "4":
-        remover()
-    elif options == "5":
-        for cliente in clientes:
-            print(f"> Nome: {cliente['clienteNom']};\n> Número identificador: {cliente['clienteID']};\n> Telefone: {cliente['telefone']};\n"
-            f"> E-mail: {cliente['e-mail']};\n> CPF: {cliente['cpf']}\n> Pontos acumulados: {cliente['pontos']}\n====================")
-    elif options == "6":
-        print("=================================================")
-        print("== Encerrando sistema de cadastro de clientes. ==")
-        print("=================================================")
-        break
-    else:
-        invalid(options)
+# A função responsável por executar o sistema de clientes no arquivo 'main.py':
+def sistema_clientes():
+    # Bloco de código que contem todas as funcionalidades do CRUD:
+    while True:
+        # A variável options permite navegar pelas funções do CRUD:
+        options = input("Bem-vindo ao sistema de cadastro de clientes do Coffee Shops Tia Rosa\n"
+        "Escolha um número de '1' a '6':\n"
+        "1. Adicionar cliente;\n2. Procurar cliente;\n3. Alterar dados de cliente;\n"
+        "4. Remover cliente;\n5. Mostrar lista de clientes;\n6. Fechar sistema.\n")
+        
+        if options == "1":
+            adicionar()
+        elif options == "2":
+            procurar()
+        elif options == "3":
+            alter()
+        elif options == "4":
+            remover()
+        elif options == "5":
+            for cliente in clientes:
+                print(f"> Nome: {cliente['clienteNom']};\n> Número identificador: {cliente['clienteID']};\n> Telefone: {cliente['telefone']};\n"
+                f"> E-mail: {cliente['e-mail']};\n> CPF: {cliente['cpf']}\n> Pontos acumulados: {cliente['pontos']}\n====================")
+        elif options == "6":
+            print("=================================================")
+            print("== Encerrando sistema de cadastro de clientes. ==")
+            print("=================================================")
+            break
+        else:
+            invalid(options)
+
+if __name__ == "__main__":
+    sistema_clientes()
