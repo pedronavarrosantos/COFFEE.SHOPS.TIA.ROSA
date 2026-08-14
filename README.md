@@ -20,13 +20,27 @@ Professor: Francisco Filho
 
 ## ☕ Funcionalidades
 
-> Em desenvolvimento.
-
-- ⏳ Menu principal
-
-> Finalizadas.
-
+- ✅ Menu principal
 - ✅ Gerenciamento de produtos
 - ✅ Cadastro de clientes
 - ✅ Controle de estoque
 - ✅ Gerenciamento de pedidos
+
+
+## 🔀 Fluxograma geral do projeto:
+
+                    ┌──────────────┐
+                    │    main.py   │
+                    └───┬┬┬┬───────┘
+                        ││││┌───────────────────────────┐
+                        │││└│    tia_rosa_cardapio.py   │
+                        │││ └────────┬──────────────────┘
+                        │││ ┌────────┴────────┐
+                        ││└─│    estoque.py   │──┐
+                        ││   ─────────────────┘  │
+                        ││  ┌──────────────────┐ │
+                        │└──│    clientes.py   │┐│
+                        │   └────────┬─────────┘││
+                        │   ┌────────┴────────┐ ││
+                        └───│    pedidos.py   │─┘┘
+                            └─────────────────┘
