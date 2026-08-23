@@ -12,7 +12,6 @@ Sistema de pedidos do Coffee Shops Tia Rosa
 
 -> A chave 'pontos' presente dos dicionários de clientes progride em valor aqui no sistema de pedidos.
 """
-
 # Como o sistema de pedido interage com chaves de todos os outros dicionários dos documentos .py do sistema, é necessário abrir todos eles em formato leitura:
 # Abertura de arquivo, lista e transformação de conteúdo em dicionário do sistema de cardápio:
 cardapio = []
@@ -135,7 +134,7 @@ def back():
 def adicionar():
     # A variável abaixo servirá para o caso do usuário inserir um nome ou id de usuário inválido:
     cliente_encontrado = None
- 
+    # Inicialmente é necessário localizar o cliente para montar o pedido, o while abaixo faz isso:
     while True:
         cliente_input = input("Digite o nome do cliente ou o seu número identificador:\n== Ou digite '0' para retornar. ==\n")
         if cliente_input == "0":
@@ -168,7 +167,7 @@ def adicionar():
     # ===== ETAPA 2: montar o pedido, prato por prato =====
     # Listas/variáveis que vão virar as chaves do dicionário do pedido:
     pratos_pedido = []      # nomes dos pratos adicionados
-    id_pratos_pedido = []   # ex: "3x2" -> prato de id 3, quantidade 2
+    id_pratos_pedido = []   # 'id' vezes quantidade
     preco_total = 0
  
     # 'reservas' guarda, ingrediente por ingrediente, quanto já foi comprometido dentro

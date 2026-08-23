@@ -247,7 +247,12 @@ def alter():
                 print(f"== Prato com nome '{nome_prato}' não consta no cardápio. ==")
                 print("=========================================================\n")
         elif loc == "2":
-            id_prato = int(input("== Digite o número de identificação: ==\n"))
+            while True:
+                try:
+                    id_prato = int(input("== Digite o número de identificação: ==\n"))
+                    break
+                except ValueError:
+                    print("== Esse campo aceita apenas números inteiros. ==")
             found = False
 
             for prato in cardapio:
@@ -255,7 +260,7 @@ def alter():
                     found = True
                     key = input("== Qual chave do prato deseja alterar? ==\n== Escolha um número: ==\n"
                     "1. Número identificador\n2. Nome\n3. Preço\n4. Ingredientes\n5. Descrição.\n=============\n"
-                    "== Ou digite qualquer outro comando para retornar ==\n=============")
+                    "== Ou digite qualquer outro comando para retornar ==\n=============\n")
                     att(key, prato)
                     break
             if not found:
@@ -295,7 +300,12 @@ def remover():
                 print(f"== Prato com nome '{nome_prato}' já não existia no cardápio. ==")
                 print("=================================================================\n")
         elif escolha == "2":
-            id_prato = int(input("== Digite o número de identificação do prato: ==\n"))
+            while True:
+                try:
+                    id_prato = int(input("== Digite o número de identificação do prato: ==\n"))
+                    break
+                except ValueError:
+                    print("== Esse campo aceita apenas números inteiros. ==")
             found = False
 
             for prato in cardapio:

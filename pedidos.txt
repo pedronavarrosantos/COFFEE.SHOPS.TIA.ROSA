@@ -10,3 +10,11 @@
 109;8;cafe expresso;1x1;5.0;pago
 110;8;cafe coado;2x2;10.0;pago
 111;8;sanduiche caprese,brownie;25x5,42x5;127.5;em andamento
+112;9;milkshake de chocolate,cafe expresso,sanduiche caprese;14x1,1x2,25x1;45.0;pago
+113;4;cheesecake de frutas vermelhas;41x1;14.0;pago
+114;4;cafe expresso,sanduiche caprese;1x2,25x1;30.0;pago
+115;4;cafe expresso;1x1;5.0;pago
+116;4;sanduiche caprese,coxinha de frango,mocha;25x1,33x1,6x2;43.449999999999996;pago
+117;1;cafe expresso;1x1;5.0;cancelado
+118;1;cafe expresso;1x1;5.0;cancelado
+119;4;cafe com leite;3x2;13.0;em andamento

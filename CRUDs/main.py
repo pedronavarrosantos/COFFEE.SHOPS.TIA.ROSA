@@ -43,5 +43,4 @@ def sistema_principal():
         else:
             invalid(options)
 
-if __name__ == "__main__":
-    sistema_principal()
+sistema_principal()

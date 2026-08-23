@@ -20,12 +20,11 @@ Professor: Francisco Filho
 
 ## ☕ Funcionalidades
 
-- ✅ Menu principal
-- ✅ Gerenciamento de produtos
-- ✅ Cadastro de clientes
-- ✅ Controle de estoque
-- ✅ Gerenciamento de pedidos
-
+- Menu principal -> main.py
+- Gerenciamento de produtos -> tia_rosa_cardapio.py
+- Cadastro de clientes -> clientes.py
+- Controle de estoque -> estoque.py
+- Gerenciamento de pedidos -> pedidos.py
 
 ## 🔀 Fluxograma geral do projeto:
 
@@ -34,13 +33,13 @@ Professor: Francisco Filho
                     └───┬┬┬┬───────┘
                         ││││┌───────────────────────────┐
                         │││└│    tia_rosa_cardapio.py   │
-                        │││ └────────┬──────────────────┘
-                        │││ ┌────────┴────────┐
-                        ││└─│    estoque.py   │──┐
-                        ││   ─────────────────┘  │
-                        ││  ┌──────────────────┐ │
-                        │└──│    clientes.py   │┐│
-                        │   └────────┬─────────┘││
-                        │   ┌────────┴────────┐ ││
-                        └───│    pedidos.py   │─┘┘
+                        │││ └────────┬────────────┬─────┘
+                        │││ ┌────────┴────────┐   │
+                        ││└─│    estoque.py   │──┐│
+                        ││  └─────────────────┘  ││
+                        ││  ┌──────────────────┐ ││
+                        │└──│    clientes.py   │┐││
+                        │   └────────┬─────────┘│││
+                        │   ┌────────┴────────┐ │││
+                        └───│    pedidos.py   │─┘┘┘
                             └─────────────────┘

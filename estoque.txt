@@ -1,19 +1,19 @@
-0;graos de cafe;292
-1;agua;999988
-2;cafe em po;210
-3;leite;391
-4;chocolate;46
+0;graos de cafe;285
+1;agua;999977
+2;cafe em po;206
+3;leite;386
+4;chocolate;44
 5;canela;77
-6;chantilly;85
+6;chantilly;83
 7;cha;102
 8;gelo;999997
-9;sorvete de chocolate;26
-10;cobertura;20
+9;sorvete de chocolate;25
+10;cobertura;19
 11;sorvete de morango;12
 12;sorvete de baunilha;55
 13;laranja;98
 14;acucar;666
-15;morango;46
+15;morango;45
 16;limao;0
 17;pao de forma;110
 18;manteiga;77
@@ -21,15 +21,15 @@
 20;queijo;319
 21;tomate;122
 22;oregano;12
-23;pao frances;89
+23;pao frances;86
 24;frango desfiado;566
 25;alface;22
 26;peito de peru;101
-27;mucarela bufala;189
-28;pesto;97
-29;rucula;32
-30;tomatinho;786
-31;presunto parma;47
+27;mucarela bufala;186
+28;pesto;94
+29;rucula;29
+30;tomatinho;783
+31;presunto parma;44
 32;carne moida;210
 33;manjericao;766
 34;molho de tomate;363
@@ -41,11 +41,14 @@
 40;pao de queijo;455
 41;requeijao;78
 42;croissant;99
-43;trigo;154
-44;frango;29
+43;trigo;152
+44;frango;28
 45;cenoura;43
 46;fuba;67
 47;milho;97
-48;creamcheese;61
-49;framboesa;8
+48;creamcheese;60
+49;framboesa;31
 50;maca;95
+51;doce de leite;0
+52;banana;0
+53;biscoito;0
