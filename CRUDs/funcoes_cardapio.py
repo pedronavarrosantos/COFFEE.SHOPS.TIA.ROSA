@@ -3,6 +3,29 @@ Esse documento concentra as funções de manupulação do arquivo CRUD tia_rosa_
 """
 
 import funcoes_gerais
+import os
+
+# Lista que guarda os pratos do cardápio em memória:
+cardapio = []
+
+# Função que carrega os pratos salvos no arquivo .txt para a lista 'cardapio':
+def carregardoc():
+    if os.path.exists("cardapiotr.txt"):
+        with open("cardapiotr.txt", "r") as doc:
+            for linha in doc:
+                linha = linha.strip()
+                if not linha:
+                    continue
+                identificacao, nome, preco, ingredientes, descricao = linha.split(";")
+                cardapio.append({
+                    "identificação": int(identificacao),
+                    "nome": nome,
+                    "preço": float(preco),
+                    "ingredientes": ingredientes,
+                    "descrição": descricao
+                })
+
+carregardoc()
 
 # Função que salva ou cria o documento caso ele ainda não exista:
 def savedoc():

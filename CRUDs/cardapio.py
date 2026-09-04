@@ -1,9 +1,8 @@
 import funcoes_gerais
 import funcoes_cardapio
-print(funcoes_cardapio.__file__)
-print(dir(funcoes_cardapio))
-# A função responsável por executar o sistema do cardápio no arquivo 'main.py':
-def sistema_cardapiox():
+
+# A função responsável por executar o sistema do cardápio no arquivo 'main.py' ou localmente:
+def sistema_cardapio():
     # Bloco de código que contem todas as funcionalidades do CRUD:
     while True:
         # A variável options permite navegar pelas funções do CRUD:
@@ -31,4 +30,4 @@ def sistema_cardapiox():
             funcoes_gerais.invalid(options)
 
 if __name__ == "__main__":
-    sistema_cardapiox()
+    sistema_cardapio()
