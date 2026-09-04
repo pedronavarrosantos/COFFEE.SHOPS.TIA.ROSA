@@ -52,3 +52,5 @@
 51;doce de leite;0
 52;banana;0
 53;biscoito;0
+54;matcha;0
+55;leita;0

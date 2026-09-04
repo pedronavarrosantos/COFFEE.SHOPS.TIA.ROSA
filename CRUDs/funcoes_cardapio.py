@@ -3,29 +3,32 @@ Esse documento concentra as funções de manupulação do arquivo CRUD tia_rosa_
 """
 
 import funcoes_gerais
-import os
 
 # Lista que guarda os pratos do cardápio em memória:
 cardapio = []
 
 # Função que carrega os pratos salvos no arquivo .txt para a lista 'cardapio':
-def carregardoc():
-    if os.path.exists("cardapiotr.txt"):
+def carregarcardapio():
+    try:
         with open("cardapiotr.txt", "r") as doc:
-            for linha in doc:
-                linha = linha.strip()
-                if not linha:
-                    continue
-                identificacao, nome, preco, ingredientes, descricao = linha.split(";")
-                cardapio.append({
-                    "identificação": int(identificacao),
-                    "nome": nome,
-                    "preço": float(preco),
-                    "ingredientes": ingredientes,
-                    "descrição": descricao
-                })
+            for line in doc:
+                rId, rNome, rPreco, rIngredientes, rDescricao = line.split(";")
+                rId = int(rId)
+                rPreco = float(rPreco)
+                rDescricao = rDescricao.strip()
 
-carregardoc()
+                cardapio.append({
+                    "identificação": rId,
+                    "nome": rNome,
+                    "preço": rPreco,
+                    "ingredientes": rIngredientes,
+                    "descrição": rDescricao
+                })
+    except FileNotFoundError:
+        with open("cardapiotr.txt", "w") as doc:
+            pass
+
+carregarcardapio()
 
 # Função que salva ou cria o documento caso ele ainda não exista:
 def savedoc():
@@ -39,11 +42,6 @@ def savedoc():
                 f"{prato['descrição']}\n"
             )
 
-# Função 'changedKey()' emite texto padrão quando uma chave é alterada dentro da função 'att(key, prato)':
-def changedKey():
-    funcoes_gerais.linhaIgual("== Chave alterada com sucesso! ==")
-    print("== Chave alterada com sucesso! ==")
-    funcoes_gerais.linhaIgual("== Chave alterada com sucesso! ==")
 # Função que adiciona pratos ao cardápio:
 def adicionar():
     while True:
@@ -160,7 +158,7 @@ def att(key, prato):
                 })
                 savedoc()
                 print(prato)
-                changedKey()
+                funcoes_gerais.changedKey()
                 break
         elif  key == "2":
             print(f"== No momento a key 'nome' tem valor {prato['nome']} ==")
@@ -170,7 +168,7 @@ def att(key, prato):
             })
             savedoc()
             print(prato)
-            changedKey()
+            funcoes_gerais.changedKey()
             break
         elif  key == "3":
             print(f"== No momento a key 'preço' tem valor {prato['preço']} ==")
@@ -184,7 +182,7 @@ def att(key, prato):
             })
             savedoc()
             print(prato)
-            changedKey()
+            funcoes_gerais.changedKey()
             break
         elif  key == "4":
             print(f"== No momento a key 'ingredientes' tem valor {prato['ingredientes']} ==")
@@ -194,7 +192,7 @@ def att(key, prato):
             })
             savedoc()
             print(prato)
-            changedKey()
+            funcoes_gerais.changedKey()
             break
         elif  key == "5":
             print(f"== No momento a key 'descrição' tem valor {prato['descrição']} ==")
@@ -204,7 +202,7 @@ def att(key, prato):
             })
             savedoc()
             print(prato)
-            changedKey()
+            funcoes_gerais.changedKey()
             break
             
         else:

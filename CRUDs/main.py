@@ -28,11 +28,11 @@ def sistema_principal():
         elif options == "4":
             pedidos.sistema_pedidos()
         elif options == "5":
-            funcoes_gerais.linhaIgual("== Encerrando sistema de cadastro de clientes. ==")
-            print("== Encerrando sistema de cadastro de clientes. ==")
-            funcoes_gerais.linhaIgual("== Encerrando sistema de cadastro de clientes. ==")
+            funcoes_gerais.end("sistema Cafeteria Tia Rosa")
+            
             break
         else:
             funcoes_gerais.invalid(options)
 
-sistema_principal()
+if __name__ == "__main__":
+    sistema_principal()

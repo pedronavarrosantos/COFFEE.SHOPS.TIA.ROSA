@@ -43,3 +43,4 @@
 43;cookie com chocolate;8.0;'trigo, acucar,chocolate';'cookie artesanal com gotas de chocolate'
 44;torta de maca;12.0;'trigo, maca, canela';'fatia de torta de maca com canela'
 45;banoffe;25.15;'doce de leite, banana, biscoito, chantilly';'banoffe deliciosa'
+46;matcha latte;9.5;'matcha, leita, agua, acucar';'matcha brabo'
