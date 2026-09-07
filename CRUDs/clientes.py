@@ -1,5 +1,5 @@
 """
-== CRUD do cardápio do Coffee Shop da Tia Rosa. ==
+== CRUD dos clientes do Coffee Shop da Tia Rosa. ==
 
 -> O sistema tem o seguinte: Adiciona clientes, procura clientes, altera clientes, remove clientes, impressão de todos os clientes.
 
