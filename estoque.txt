@@ -1,59 +1,59 @@
-0;graos de cafe;0
-1;agua;0
-2;cafe em po;0
-3;leite;0
-4;chocolate;0
-5;canela;0
-6;chantilly;0
-7;cha;0
-8;gelo;0
-9;sorvete de chocolate;0
-10;cobertura;0
-11;sorvete de morango;0
-12;sorvete de baunilha;0
-13;laranja;0
-14;acucar;0
-15;morango;0
-16;limao;0
-17;pao de forma;0
-18;manteiga;0
-19;presunto;299
-20;queijo;0
-21;tomate;0
-22;oregano;0
-23;pao frances;0
-24;frango desfiado;0
-25;alface;0
-26;peito de peru;0
-27;mucarela bufala;0
-28;pesto;0
-29;rucula;0
-30;tomatinho;0
-31;presunto parma;0
-32;carne moida;0
-33;manjericao;0
-34;molho de tomate;0
-35;cebola;0
-36;pao de cachorro-quente;0
-37;salsicha;0
-38;batata palha;0
-39;baguete;0
-40;pao de queijo;0
-41;requeijao;0
-42;croissant;0
-43;trigo;0
-44;frango;0
-45;cenoura;0
-46;fuba;0
-47;milho;0
-48;creamcheese;0
-49;framboesa;0
-50;maca;0
-51;doce de leite;0
-52;banana;0
-53;biscoito;0
-54;matcha;0
-55;leita;0
-56;mussarela;0
-57;carne;0
-58;massa;0
+0;graos de cafe;99
+1;agua;997
+2;cafe em po;1000
+3;leite;1000
+4;chocolate;1000
+5;canela;1000
+6;chantilly;1000
+7;cha;1000
+8;gelo;1000
+9;sorvete de chocolate;1000
+10;cobertura;1000
+11;sorvete de morango;1000
+12;sorvete de baunilha;1000
+13;laranja;1000
+14;acucar;998
+15;morango;1000
+16;limao;1000
+17;pao de forma;1000
+18;manteiga;999
+19;presunto;296
+20;queijo;999
+21;tomate;999
+22;oregano;1000
+23;pao frances;998
+24;frango desfiado;1000
+25;alface;999
+26;peito de peru;999
+27;mucarela bufala;999
+28;pesto;999
+29;rucula;999
+30;tomatinho;999
+31;presunto parma;999
+32;carne moida;1000
+33;manjericao;1000
+34;molho de tomate;1000
+35;cebola;1000
+36;pao de cachorro-quente;1000
+37;salsicha;1000
+38;batata palha;1000
+39;baguete;1000
+40;pao de queijo;1000
+41;requeijao;1000
+42;croissant;1000
+43;trigo;1000
+44;frango;1000
+45;cenoura;1000
+46;fuba;1000
+47;milho;1000
+48;creamcheese;1000
+49;framboesa;1000
+50;maca;1000
+51;doce de leite;1000
+52;banana;1000
+53;biscoito;1000
+54;matcha;998
+55;leita;998
+56;mussarela;997
+57;carne;997
+58;massa;997

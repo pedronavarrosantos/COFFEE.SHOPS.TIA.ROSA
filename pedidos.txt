@@ -17,4 +17,6 @@
 116;4;sanduiche caprese,coxinha de frango,mocha;25x1,33x1,6x2;43.449999999999996;pago
 117;1;cafe expresso;1x1;5.0;cancelado
 118;1;cafe expresso;1x1;5.0;cancelado
-119;4;cafe com leite;3x2;13.0;em andamento
+119;4;cafe com leite;3x2;13.0;pago
+120;4;sanduiche de peru,sanduiche caprese;24x1,25x1;36.0;pago
+121;3;matcha latte,lasanha,cafe expresso;46x2,47x3,1x1;90.75;em andamento

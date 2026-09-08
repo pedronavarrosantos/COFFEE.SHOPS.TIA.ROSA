@@ -1,7 +1,3 @@
-"""
-O presente arquivo serve apenas como interface principal em que o usuário poderá acessar todos os outros sistemas do projeto navegando aqui dentro.
-"""
-# Abaixo está a importação de todos os outros sistemas do projeto e funções básicas:
 import clientes
 import estoque
 import pedidos
@@ -9,7 +5,6 @@ import cardapio
 import funcoes_gerais
 
 def sistema_principal():
-    # O while abaixo realiza a navegação entre sistemas:
     while True:
         options = input("== Bem-vindo ao sistema do Coffee Shops Tia Rosa! ==\n== O que deseja acessar? ==\n"
         "== Escolha um número: ==\n"

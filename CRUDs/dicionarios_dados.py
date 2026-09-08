@@ -93,3 +93,43 @@ def carregarEstoque():
                     "quantidade": quantidade_atual
                 })
                 counter += 1
+
+# Abertura de arquivo, lista e transformação de conteúdo em dicionário do sistema de pedidos:
+pedidos = []
+
+def carregarPedidos():
+    try:
+        with open("pedidos.txt", "r") as doc3:
+            for line in doc3:
+                linha = line.strip()
+                if linha == "":
+                    continue
+                rId, rCliente, rPratos, rIdPratos, rPreco, rSituacao = linha.split(";")
+    
+                pedidos.append({
+                    "id": int(rId),
+                    "cliente": int(rCliente),
+                    "pratos": rPratos.split(","),
+                    "id_pratos": rIdPratos.split(","),
+                    "preço": float(rPreco),
+                    "situação": rSituacao
+                })
+    except FileNotFoundError:
+        with open("pedidos.txt", "w") as doc:
+            pass
+
+# Abertura de arquivo, lista e transformação de conteúdo em dicionário do sistema de estoque:
+estoque = []
+
+def estruturarEstoque():
+    with open('estoque.txt', 'r') as doc2:
+        for line in doc2:
+            counter, frag, quantidade_atual = line.split(";")
+            counterint = int(counter)
+            quantidade_atual = int(quantidade_atual)
+
+            estoque.append({
+                "id": counterint,
+                "ingrediente": frag,
+                "quantidade": quantidade_atual
+            })
