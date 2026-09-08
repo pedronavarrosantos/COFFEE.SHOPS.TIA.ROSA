@@ -3,39 +3,15 @@ Esse arquivo concentra as funções de manipulação do sistema CRUD de clientes
 """
 
 import funcoes_gerais
+import dicionarios_dados
 
-# Lista que guarda os clientes do cardápio em memória:
-clientes = []
 
-# Função que carrega os clientes salvos no arquivo .txt para a lista 'clientes':
-def carregarclientes():
-    try:
-        with open("clientes.txt", "r") as doc:
-            for line in doc:
-                user, userID, nTel, e_mail, cpf, points = line.split(";")
-                userID = int(userID)
-                points = int(points)
-                nTel = str(nTel)
-                cpf = str(cpf)
-
-                clientes.append({
-                    "clienteNom": user,
-                    "clienteID": userID,
-                    "telefone": nTel,
-                    "e-mail": e_mail,
-                    "cpf": cpf,
-                    "pontos": points # Ao criar um novo cliente, o valor da chave pontos sempre será 0.
-                })
-    except FileNotFoundError:
-        with open("clientes.txt", "w") as doc:
-            pass
-
-carregarclientes()
+dicionarios_dados.carregarclientes()
 
 # Função que salva ou cria o documento caso ele ainda não exista:
 def saveclient():
     with open("clientes.txt", "w") as doc:
-        for cliente in clientes:
+        for cliente in dicionarios_dados.clientes:
             doc.write(
                 f"{cliente['clienteNom']};"
                 f"{cliente['clienteID']};"
@@ -54,7 +30,7 @@ def adicionar():
 
         
         if user != "0":
-            userID = clientes[-1]['clienteID'] + 1
+            userID = dicionarios_dados.clientes[-1]['clienteID'] + 1
 
             nTel = input("=============================================\n"
             "== Digite o número de telefone do cliente: ==\n"
@@ -89,7 +65,7 @@ def adicionar():
                 continue
                     
 
-            clientes.append({
+            dicionarios_dados.clientes.append({
                 "clienteNom": user,
                 "clienteID": userID,
                 "telefone": nTel,
@@ -114,7 +90,7 @@ def procurar():
         if escolha == "1":
             nome_cliente = input("Digite o nome do cliente:\n")
 
-            for cliente in clientes:
+            for cliente in dicionarios_dados.clientes:
                 if nome_cliente == cliente["clienteNom"]:
                     print(f"== Nome: {cliente['clienteNom']}; ==\n== Número identificador: {cliente['clienteID']}; ==\n== Telefone: {cliente['telefone']}; =="
                     f"\n== E-mail: {cliente['e-mail']}; ==\n== CPF: {cliente['cpf']}. ==\n== Pontos: {cliente['pontos']}. ==")
@@ -135,7 +111,7 @@ def procurar():
                 funcoes_gerais.linhaIgual("== ID inválido. Digite apenas números. ==")
                 continue
 
-            for cliente in clientes:
+            for cliente in dicionarios_dados.clientes:
                 if id_cliente == cliente["clienteID"]:
                     print(f"== Nome: {cliente['clienteNom']}; ==\n== Número identificador: {cliente['clienteID']}; ==\n== Telefone: {cliente['telefone']}; =="
                     f"\n== E-mail: {cliente['e-mail']}; ==\n== CPF: {cliente['cpf']}. ==\n== Pontos: {cliente['pontos']}. ==")
@@ -174,7 +150,7 @@ def att(key, cliente):
                 # O 'for'abaixo existe para evitar que, durante uma reatribuição da chave 'clienteID', clientes fiquem com números identificadores repetidos.
                 # O 'for' precisa ter uma variável diferente de 'cliente', uma vez que a função já recebe um valor para essa variável, 
                 # para isso, utiliza-se 'outro_cliente":
-                for outro_cliente in clientes:
+                for outro_cliente in dicionarios_dados.clientes:
                     if outro_cliente != cliente:
                         if newKey == outro_cliente["clienteID"]:
                             found = True
@@ -224,7 +200,7 @@ def att(key, cliente):
             if "@" in newKey and newKey[0] != "@" and newKey.endswith(".com") == True:
                 found = False
 
-                for outro_cliente in clientes:
+                for outro_cliente in dicionarios_dados.clientes:
                     if outro_cliente is not cliente:
                         if newKey == cliente['e-mail']:
                             found = True
@@ -252,7 +228,7 @@ def att(key, cliente):
             if newKey.isdigit() == True and len(newKey) == 11:
                 found = False
 
-                for cliente in clientes:
+                for cliente in dicionarios_dados.clientes:
                     if newKey == cliente['cpf']:
                         found = True
 
@@ -307,7 +283,7 @@ def alter():
             nome_cliente = input("===Digite o nome do cliente:===\n")
             found = False
 
-            for cliente in clientes:
+            for cliente in dicionarios_dados.clientes:
                 if nome_cliente == cliente["clienteNom"]:
                     found = True
                     key = input("== Qual chave do cliente deseja alterar? ==\n== Escolha um número: ==\n"
@@ -329,7 +305,7 @@ def alter():
             else:
                 found = False
 
-                for cliente in clientes:
+                for cliente in dicionarios_dados.clientes:
                     if id_cliente == cliente["clienteID"]:
                         found = True
                         key = input("== Qual chave do cliente deseja alterar? ==\n== Escolha um número: ==\n"
@@ -359,11 +335,11 @@ def remover():
             nome_cliente = input("== Digite o nome do cliente: ==\n")
             found = False
 
-            for cliente in clientes:
+            for cliente in dicionarios_dados.clientes:
                 if nome_cliente == cliente["clienteNom"]:
                     found = True
 
-                    clientes.remove(cliente)
+                    dicionarios_dados.clientes.remove(cliente)
 
                     funcoes_gerais.linhaIgual(f"== Cliente {nome_cliente} removido. ==")
                     print(f"== Cliente {nome_cliente} removido. ==")
@@ -383,11 +359,11 @@ def remover():
                 funcoes_gerais.linhaIgual("== Você digitou um valor inválido para a key. ==")
             found = False
 
-            for cliente in clientes:
+            for cliente in dicionarios_dados.clientes:
                 if id_cliente == cliente["clienteID"]:
                     found = True
 
-                    clientes.remove(cliente)
+                    dicionarios_dados.clientes.remove(cliente)
 
                     funcoes_gerais.linhaIgual(f"== Cliente {id_cliente} removido. ==")
                     print(f"== Cliente {id_cliente} removido. ==")
@@ -403,6 +379,6 @@ def remover():
 
 # A função 'printClientes()' permite ao usuário visualizar toda a lista de clientes no terminal:
 def printClentes():
-    for cliente in clientes:
+    for cliente in dicionarios_dados.clientes:
                 print(f"> Nome: {cliente['clienteNom']};\n> Número identificador: {cliente['clienteID']};\n> Telefone: {cliente['telefone']};\n"
                 f"> E-mail: {cliente['e-mail']};\n> CPF: {cliente['cpf']}\n> Pontos acumulados: {cliente['pontos']}\n====================")

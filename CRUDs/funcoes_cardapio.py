@@ -3,37 +3,14 @@ Esse documento concentra as funções de manupulação do arquivo CRUD tia_rosa_
 """
 
 import funcoes_gerais
+import dicionarios_dados
 
-# Lista que guarda os pratos do cardápio em memória:
-cardapio = []
-
-# Função que carrega os pratos salvos no arquivo .txt para a lista 'cardapio':
-def carregarcardapio():
-    try:
-        with open("cardapiotr.txt", "r") as doc:
-            for line in doc:
-                rId, rNome, rPreco, rIngredientes, rDescricao = line.split(";")
-                rId = int(rId)
-                rPreco = float(rPreco)
-                rDescricao = rDescricao.strip()
-
-                cardapio.append({
-                    "identificação": rId,
-                    "nome": rNome,
-                    "preço": rPreco,
-                    "ingredientes": rIngredientes,
-                    "descrição": rDescricao
-                })
-    except FileNotFoundError:
-        with open("cardapiotr.txt", "w") as doc:
-            pass
-
-carregarcardapio()
+dicionarios_dados.carregarcardapio()
 
 # Função que salva ou cria o documento caso ele ainda não exista:
 def savedoc():
     with open("cardapiotr.txt", "w") as doc:
-        for prato in cardapio:
+        for prato in dicionarios_dados.cardapio:
             doc.write(
                 f"{prato['identificação']};"
                 f"{prato['nome']};"
@@ -53,7 +30,7 @@ def adicionar():
             funcoes_gerais.positiveOnly()
             continue
         if rId != 0:
-            for prato in cardapio:
+            for prato in dicionarios_dados.cardapio:
                 if rId == int(prato["identificação"]):
                     funcoes_gerais.linhaIgual("===Já existe um prato com essa identificação.===")
                     print("===Já existe um prato com essa identificação.===")
@@ -71,7 +48,7 @@ def adicionar():
                 descricao = input("== Digite a descrição do prato: ==\n")
                 rDescricao = "'" + descricao + "'"
 
-                cardapio.append({
+                dicionarios_dados.cardapio.append({
                     "identificação": rId,
                     "nome": rNome,
                     "preço": rPreco,
@@ -95,7 +72,7 @@ def procurar():
         if escolha == "1":
             nome_prato = input("Digite o nome do prato:\n")
 
-            for prato in cardapio:
+            for prato in dicionarios_dados.cardapio:
                 if nome_prato == prato["nome"]:
                     print(f"== Identificação: {prato['identificação']}; ==\n== Nome: {prato['nome']}; ==\n== Preço: {prato['preço']}; =="
                     f"\n== Ingredientes: {prato['ingredientes']}; ==\n== Descrição: {prato['descrição']}. ==")
@@ -109,7 +86,7 @@ def procurar():
                 funcoes_gerais.linhaIgual("== Prato não encontrado. ==")
         elif escolha == "2":
             id_prato = int(input("Digite o número de indentificação do prato:\n"))
-            for prato in cardapio:
+            for prato in dicionarios_dados.cardapio:
                 if id_prato == prato["identificação"]:
                     print(f"== Identificação: {prato['identificação']}; ==\n== Nome: {prato['nome']}; ==\n== Preço: {prato['preço']}; =="
                     f"\n== Ingredientes: {prato['ingredientes']}; ==\n== Descrição: {prato['descrição']}. ==")
@@ -144,7 +121,7 @@ def att(key, prato):
             # O 'for'abaixo existe para evitar que, durante uma reatribuição da chave 'identificação', pratos fiquem com números identificadores repetidos.
             # O 'for' precisa ter uma variável diferente de 'prato', uma vez que a função já recebe um valor para essa variável, 
             # para isso, utiliza-se 'outro_prato":
-            for outro_prato in cardapio:
+            for outro_prato in dicionarios_dados.cardapio:
                 if outro_prato != prato:
                     if newKey == outro_prato["identificação"]:
                         found = True
@@ -220,7 +197,7 @@ def alter():
             nome_prato = input("===Digite o nome do prato:===\n")
             found = False
 
-            for prato in cardapio:
+            for prato in dicionarios_dados.cardapio:
                 if nome_prato == prato["nome"]:
                     found = True
                     key = input("== Qual chave do prato deseja alterar? ==\n== Escolha um número: ==\n"
@@ -241,7 +218,7 @@ def alter():
                     print("== Esse campo aceita apenas números inteiros. ==")
             found = False
 
-            for prato in cardapio:
+            for prato in dicionarios_dados.cardapio:
                 if id_prato == prato["identificação"]:
                     found = True
                     key = input("== Qual chave do prato deseja alterar? ==\n== Escolha um número: ==\n"
@@ -271,11 +248,11 @@ def remover():
             nome_prato = input("== Digite o nome do prato: ==\n")
             found = False
 
-            for prato in cardapio:
+            for prato in dicionarios_dados.cardapio:
                 if nome_prato == prato["nome"]:
                     found = True
 
-                    cardapio.remove(prato)
+                    dicionarios_dados.cardapio.remove(prato)
 
                     print("===================================")
                     print(f"== Prato {nome_prato} removido. ==")
@@ -299,7 +276,7 @@ def remover():
                 if id_prato == prato["identificação"]:
                     found = True
 
-                    cardapio.remove(prato)
+                    dicionarios_dados.cardapio.remove(prato)
 
                     print("==================================")
                     print(f"== Prato {id_prato} removido. ==")
@@ -315,6 +292,6 @@ def remover():
 
 # A função 'show()' permite ao usuário imprimir os pratos do cardápio:
 def show():
-    for prato in cardapio:
+    for prato in dicionarios_dados.cardapio:
                 print(f"> Número identificador: {prato['identificação']};\n> Nome: {prato['nome']};\n> Preço: R$:{prato['preço']};\n"
                 f"> Ingredientes: {prato['ingredientes']};\n> Descrição: {prato['descrição']}\n====================")

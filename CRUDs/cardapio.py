@@ -22,9 +22,7 @@ def sistema_cardapio():
         elif options == "5":
             funcoes_cardapio.show()
         elif options == "6":
-            print("=====================================")
-            print("== Encerrando sistema de cardápio. ==")
-            print("=====================================")
+            funcoes_gerais.end("Sistema de Cardápio")
             break
         else:
             funcoes_gerais.invalid(options)

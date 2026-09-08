@@ -44,3 +44,4 @@
 44;torta de maca;12.0;'trigo, maca, canela';'fatia de torta de maca com canela'
 45;banoffe;25.15;'doce de leite, banana, biscoito, chantilly';'banoffe deliciosa'
 46;matcha latte;9.5;'matcha, leita, agua, acucar';'matcha brabo'
+47;lasanha;22.25;'mussarela, presunto, carne, massa';'dlç'

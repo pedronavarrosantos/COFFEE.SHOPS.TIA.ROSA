@@ -1,15 +1,7 @@
-"""
-== CRUD dos clientes do Coffee Shop da Tia Rosa. ==
-
--> O sistema tem o seguinte: Adiciona clientes, procura clientes, altera clientes, remove clientes, impressão de todos os clientes.
-
--> Os clientes serão armazenados em dicionários com 6 chaves: nome, id (número identificador do cliente), telefone, e-mail, cpf e pontos
-"""
-
 import funcoes_gerais
 import funcoes_clientes
 
-# A função responsável por executar o sistema de clientes no arquivo 'main.py':
+# A função responsável por executar o sistema de clientes no arquivo 'main.py' ou localmente:
 def sistema_clientes():
     # Bloco de código que contem todas as funcionalidades do CRUD:
     while True:
