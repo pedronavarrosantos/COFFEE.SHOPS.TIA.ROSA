@@ -1,3 +1,9 @@
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "CRUDs"))
+
+import funcoes_gerais as fg
 from db_connection_2 import get_connection
 
 def mostrar():
@@ -11,34 +17,10 @@ def mostrar():
         f"> Nome: {prato[1]};\n"
         f"> Preço: R$:{prato[2]};\n"
         f"> Descrição: {prato[3]}")
-        linhaIgual(f"> Descrição: {prato[3]}")
+        fg.linhaIgual(f"> Descrição: {prato[3]}")
 
     cursor.close()
     conn.close()
-
-def linhaIgual(x):
-    lin = len(x)
-    print("=" * lin)
-# Função 'invalid()' emite texto padrão em caso de invalidez de input, recebe como parâmetro a variável 'escolha', ou 'loc' ou 'options':
-def invalid(escolha):
-    print("=================================")
-    print(f"== O comando '{escolha}' não é válido. ==")
-    print("=================================")
-# Função 'back()' emite texto padrão para informar ao usuário que o programa está retornando ao menu principal:
-def back():
-    print("=================")
-    print("== Retornando. ==")
-    print("=================\n")
-# Função 'changedKey()' emite texto padrão quando uma chave é alterada dentro da função 'att(key, prato)':
-def changedKey():
-    print("=================================")
-    print("== Chave alterada com sucesso! ==")
-    print("=================================")
-# Função 'positiveOnly()' emite texto padrão quando o usuário tenta atribuir valor negativo a uma chave que só aceita valores positivos:
-def positiveOnly():
-    print("===================================================")
-    print("== Essa variável aceita apenas valores positivos ==")
-    print("===================================================\n")
 
 def mostrar_ingredientes_disponiveis(cursor):
     cursor.execute("SELECT id, ingrediente FROM estoque ORDER BY id")
@@ -87,7 +69,7 @@ def adicionar():
     rPreco = float(input("== Digite o preço do prato: ==\n"))
 
     if rPreco < 0:
-        positiveOnly()
+        fg.positiveOnly()
         cursor.close()
         conn.close()
         return
@@ -129,10 +111,10 @@ def procurar():
             buscar_e_exibir_prato(coluna="id", valor=id_prato)
 
         elif escolha == "0":
-            back()
+            fg.back()
             break
         else:
-            invalid(escolha)
+            fg.invalid(escolha)
 
 
 def buscar_e_exibir_prato(coluna, valor):
@@ -165,7 +147,7 @@ def buscar_e_exibir_prato(coluna, valor):
 
     cursor.close()
     conn.close()
-    
+
 def localizar_prato(coluna, valor):
     conn = get_connection()
     cursor = conn.cursor()
@@ -191,7 +173,7 @@ def att(key, prato_id):
             print("== Digite apenas números válidos. ==")
             cursor.close(); conn.close(); return
         if newKey < 0:
-            positiveOnly()
+            fg.positiveOnly()
             cursor.close(); conn.close(); return
         cursor.execute("UPDATE cardapio SET preco = %s WHERE id = %s", (newKey, prato_id))
 
@@ -200,7 +182,7 @@ def att(key, prato_id):
         conn.commit()
         adicionar_ingredientes_ao_prato(cursor, conn, prato_id)
         cursor.close(); conn.close()
-        changedKey()
+        fg.changedKey()
         return
 
     elif key == "5":
@@ -208,12 +190,12 @@ def att(key, prato_id):
         cursor.execute("UPDATE cardapio SET descricao = %s WHERE id = %s", (newKey, prato_id))
 
     else:
-        invalid(key)
+        fg.invalid(key)
         cursor.close(); conn.close()
         return
 
     conn.commit()
-    changedKey()
+    fg.changedKey()
     cursor.close()
     conn.close()
 
@@ -235,10 +217,10 @@ def alter():
                 continue
             prato = localizar_prato("id", id_prato)
         elif loc == "0":
-            back()
+            fg.back()
             break
         else:
-            invalid(loc)
+            fg.invalid(loc)
             continue
 
         if not prato:
@@ -253,85 +235,92 @@ def alter():
         att(key, prato[0])
 # Função que remove pratos ao cardápio:
 def remover():
-    while True:            
+    while True:
         escolha = input("Como deseja remover o prato?\nEscolha um número:\n 1. Nome\n 2. Número de indentificação;\nOu digite '0' para retornar ao menu principal.\n")
 
         if escolha == "0":
-            back()
+            fg.back()
             break
         elif escolha == "1":
             nome_prato = input("== Digite o nome do prato: ==\n")
-            found = False
-
-            for prato in cardapio:
-                if nome_prato == prato["nome"]:
-                    found = True
-
-                    cardapio.remove(prato)
-
-                    print("===================================")
-                    print(f"== Prato {nome_prato} removido. ==")
-                    print("===================================\n")
-                    savedoc()
-                    break
-            if not found:
-                print("=================================================================")
-                print(f"== Prato com nome '{nome_prato}' já não existia no cardápio. ==")
-                print("=================================================================\n")
+            prato = localizar_prato("nome", nome_prato)
+            remover_prato(prato, nome_prato)
         elif escolha == "2":
-            while True:
-                try:
-                    id_prato = int(input("== Digite o número de identificação do prato: ==\n"))
-                    break
-                except ValueError:
-                    print("== Esse campo aceita apenas números inteiros. ==")
-            found = False
-
-            for prato in cardapio:
-                if id_prato == prato["identificação"]:
-                    found = True
-
-                    cardapio.remove(prato)
-
-                    print("==================================")
-                    print(f"== Prato {id_prato} removido. ==")
-                    print("==================================\n")
-                    savedoc()
-                    break
-            if not found:
-                print("==================================================================================")
-                print(f"== Prato com número de identificação '{id_prato}' já não existia no cardápio. ==")
-                print("==================================================================================\n")
+            try:
+                id_prato = int(input("== Digite o número de identificação do prato: ==\n"))
+            except ValueError:
+                print("== Esse campo aceita apenas números inteiros. ==")
+                continue
+            prato = localizar_prato("id", id_prato)
+            remover_prato(prato, id_prato)
         else:
-            invalid(escolha)
+            fg.invalid(escolha)
 
-# A função responsável por executar o sistema do cardápio no arquivo 'main.py':
-def sistema_cardapio():
-    # Bloco de código que contem todas as funcionalidades do CRUD:
+
+def remover_prato(prato, referencia):
+    if not prato:
+        print("=================================================================")
+        print(f"== Prato '{referencia}' já não existia no cardápio. ==")
+        print("=================================================================\n")
+        return
+
+    prato_id = prato[0]
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("UPDATE cardapio SET ativo = FALSE WHERE id = %s", (prato_id,))
+    conn.commit()
+
+    print("===================================")
+    print(f"== Prato {referencia} removido. ==")
+    print("===================================\n")
+
+    cursor.close()
+    conn.close()
+
+def localizar_prato_qualquer(coluna, valor):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT id, nome, preco, descricao, ativo FROM cardapio WHERE {coluna} = %s", (valor,))
+    prato = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return prato
+
+
+def reativar():
     while True:
-        # A variável options permite navegar pelas funções do CRUD:
-        options = input("Bem-vindo ao sistema de cardápio do Coffee Shops Tia Rosa\n"
-        "Escolha um número de '1' a '6':\n"
-        "1. Adicionar prato ao cardápio;\n2. Procurar prato no cardápio;\n3. Alterar dados de prato do cardápio;\n"
-        "4. Remover prato do cardápio;\n5. Mostrar cardápio;\n6. Fechar sistema.\n")
-        
-        if options == "1":
-            adicionar()
-        elif options == "2":
-            procurar()
-        elif options == "3":
-            alter()
-        elif options == "4":
-            remover()
-        elif options == "5":
-            mostrar()
-        elif options == "6":
-            print("=====================================")
-            print("== Encerrando sistema de cardápio. ==")
-            print("=====================================")
-            break
-        else:
-            invalid(options)
+        escolha = input("Como deseja localizar o prato?\nEscolha um número:\n 1. Nome\n 2. Número de identificação;\nOu digite '0' para retornar.\n")
 
-if __name__ == "__main__":
-    sistema_cardapio()
+        if escolha == "0":
+            fg.back()
+            break
+        elif escolha == "1":
+            nome_prato = input("== Digite o nome do prato: ==\n")
+            prato = localizar_prato_qualquer("nome", nome_prato)
+        elif escolha == "2":
+            try:
+                id_prato = int(input("== Digite o número de identificação do prato: ==\n"))
+            except ValueError:
+                print("== Esse campo aceita apenas números inteiros. ==")
+                continue
+            prato = localizar_prato_qualquer("id", id_prato)
+        else:
+            fg.invalid(escolha)
+            continue
+
+        if not prato:
+            print("== Prato não encontrado. ==\n")
+            continue
+        if prato[4]:
+            print("== Esse prato já está ativo. ==\n")
+            continue
+
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE cardapio SET ativo = TRUE WHERE id = %s", (prato[0],))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        print(f"== Prato {prato[1]} reativado. ==\n")
