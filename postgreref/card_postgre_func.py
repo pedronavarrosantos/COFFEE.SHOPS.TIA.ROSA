@@ -324,3 +324,66 @@ def reativar():
         conn.close()
 
         print(f"== Prato {prato[1]} reativado. ==\n")
+
+def obter_todos_pratos():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, nome, preco, descricao FROM cardapio WHERE ativo = TRUE ORDER by id")
+    pratos = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return pratos
+
+def salvar_prato_db(nome, preco, descricao):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    # Lógica para gerar o ID automaticamente (igual à sua original)
+    cursor.execute("SELECT MAX(id) FROM cardapio")
+    maior_id = cursor.fetchone()[0]
+    rId = 1 if maior_id is None else maior_id + 1
+
+    # Insere os dados que vieram do formulário do site
+    cursor.execute(
+        "INSERT INTO cardapio (id, nome, preco, descricao) VALUES (%s, %s, %s, %s)",
+        (rId, nome, preco, descricao)
+    )
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+    return rId
+
+def deletar_prato_db(prato_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Faz o "soft delete" mudando a coluna ativo para FALSE
+    cursor.execute("UPDATE cardapio SET ativo = FALSE WHERE id = %s", (prato_id,))
+    
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def obter_prato_por_id(prato_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, nome, preco, descricao FROM cardapio WHERE id = %s", (prato_id,))
+    prato = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return prato
+
+def atualizar_prato_db(prato_id, nome, preco, descricao):
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Atualiza os campos do prato onde o ID for igual ao enviado
+    cursor.execute(
+        "UPDATE cardapio SET nome = %s, preco = %s, descricao = %s WHERE id = %s",
+        (nome, preco, descricao, prato_id)
+    )
+    
+    conn.commit()
+    cursor.close()
+    conn.close()

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Novo Prato - Coffee Shop Tia Rosa</title>
+</head>
+<body>
+    <h1>☕ Adicionar Novo Prato ao Cardápio</h1>
+    
+    <!-- O 'action' diz para onde os dados serão enviados no app.py -->
+    <form action="/salvar_prato" method="POST">
+        <label>Nome do Prato:</label><br>
+        <input type="text" name="nome" required><br><br>
+        
+        <label>Preço (use ponto para decimais):</label><br>
+        <input type="number" step="0.01" name="preco" required><br><br>
+        
+        <label>Descrição:</label><br>
+        <textarea name="descricao" required></textarea><br><br>
+        
+        <button type="submit">Salvar Prato</button>
+    </form>
+    
+    <br>
+    <a href="/cardapio">⬅ Voltar para o Cardápio</a>
+</body>
+</html>

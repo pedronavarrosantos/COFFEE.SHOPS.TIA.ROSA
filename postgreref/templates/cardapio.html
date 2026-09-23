@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cardápio - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>☕ Cardápio de Produtos</h1>
+    <a href="/adicionar_prato">➕ Adicionar Novo Prato</a>
+    <br><br>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Preço</th>
+                <th>Descrição</th>
+                <th>Ações</th> <!-- Nova Coluna -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for prato in pratos %}
+            <tr>
+                <td>{{ prato[0] }}</td>
+                <td>{{ prato[1] }}</td>
+                <td>R$ {{ prato[2] }}</td>
+                <td>{{ prato[3] }}</td>
+                <td>
+                    <a href="/editar_prato/{{ prato[0] }}">✏️ Editar</a> | 
+                    <a href="/deletar_prato/{{ prato[0] }}" onclick="return confirm('Tem certeza que deseja remover este prato?')">❌ Excluir</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <br>
+    <a href="/">⬅ Voltar para o Menu Principal</a>
+</body>
+</html>

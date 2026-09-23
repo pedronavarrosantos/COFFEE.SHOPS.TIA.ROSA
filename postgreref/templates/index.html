@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- BARRA DE NAVEGAÇÃO (Sempre visível no topo) -->
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h1>☕ Coffee Shop Tia Rosa</h1>
+        <p>Selecione o módulo que deseja gerenciar</p>
+        
+        <!-- MENU EM CARDS -->
+        <div class="menu-grid">
+            <a href="/cardapio" class="card">
+                <div class="card-icon">☕</div>
+                <span>Cardápio</span>
+            </a>
+            
+            <a href="/clientes" class="card">
+                <div class="card-icon">👥</div>
+                <span>Clientes</span>
+            </a>
+            
+            <a href="/estoque" class="card">
+                <div class="card-icon">📦</div>
+                <span>Estoque</span>
+            </a>
+            
+            <a href="/pedidos" class="card">
+                <div class="card-icon">📝</div>
+                <span>Pedidos</span>
+            </a>
+            
+            <a href="/relatorios" class="card">
+                <div class="card-icon">📊</div>
+                <span>Relatórios</span>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

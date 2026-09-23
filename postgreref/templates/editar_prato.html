@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Prato - Coffee Shop Tia Rosa</title>
+</head>
+<body>
+    <h1>☕ Editar Prato do Cardápio</h1>
+    
+    <!-- O 'action' agora envia para a rota de atualizar -->
+    <form action="/atualizar_prato" method="POST">
+        <!-- Campo invisível para guardar o ID do prato e saber qual atualizar -->
+        <input type="hidden" name="id" value="{{ prato[0] }}">
+
+        <label>Nome do Prato:</label><br>
+        <input type="text" name="nome" value="{{ prato[1] }}" required><br><br>
+        
+        <label>Preço:</label><br>
+        <input type="number" step="0.01" name="preco" value="{{ prato[2] }}" required><br><br>
+        
+        <label>Descrição:</label><br>
+        <textarea name="descricao" required>{{ prato[3] }}</textarea><br><br>
+        
+        <button type="submit">Salvar Alterações</button>
+    </form>
+    
+    <br>
+    <a href="/cardapio">⬅ Voltar para o Cardápio</a>
+</body>
+</html>
