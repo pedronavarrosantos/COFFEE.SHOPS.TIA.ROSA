@@ -5,6 +5,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "..", "GFUNCs"))
 
 import funcoes_gerais as fg
 from db_connection_2 import get_connection
+from decimal import Decimal
 
 def buscar_cliente(cursor, valor):
     cursor.execute(
@@ -107,14 +108,15 @@ def adicionar():
 
         cliente_id, cliente_nome, pontos = cliente_encontrado
         desconto = pontos >= 5
-        preco_final = preco_total * 0.85 if desconto else preco_total
+        preco_final = preco_total * Decimal("0.85") if desconto else preco_total
 
         cursor.execute("SELECT MAX(id) FROM pedidos")
         maior_id = cursor.fetchone()[0]
         id_pedido = 100 if maior_id is None else maior_id + 1
 
+        # --- REFATORAÇÃO AQUI: Adicionado data_pedido utilizando CURRENT_TIMESTAMP ---
         cursor.execute(
-            "INSERT INTO pedidos (id, cliente_id, valor_total, status) VALUES (%s, %s, %s, %s)",
+            "INSERT INTO pedidos (id, cliente_id, valor_total, status, data_pedido) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)",
             (id_pedido, cliente_id, preco_final, "em andamento")
         )
 
@@ -164,12 +166,19 @@ def verificar():
 
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute("SELECT status FROM pedidos WHERE id = %s", (id_pedido_int,))
+        # --- REFATORAÇÃO AQUI: Adicionado data_pedido no SELECT ---
+        cursor.execute("SELECT status, data_pedido FROM pedidos WHERE id = %s", (id_pedido_int,))
         resultado = cursor.fetchone()
         cursor.close()
         conn.close()
 
-        print(f"== O pedido está {resultado[0]}. ==" if resultado else f"== O pedido {id_pedido_int} não existe. ==")
+        if resultado:
+            status, data = resultado
+            # Formatando a data para ficar mais legível (YYYY-MM-DD HH:MM)
+            data_formatada = data.strftime("%d/%m/%Y %H:%M") if data else "Não informada"
+            print(f"== O pedido está {status}. Realizado em: {data_formatada} ==")
+        else:
+            print(f"== O pedido {id_pedido_int} não existe. ==")
 
 
 def listar_pratos_do_pedido(cursor, pedido_id):
@@ -487,3 +496,98 @@ def fechar():
 
         cursor.close()
         conn.close()
+
+def processar_pedido_automatico(cliente_id, itens_pedido_lista):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        reservas = {}
+        preco_total = 0
+
+        for cardapio_id, quantidade in itens_pedido_lista:
+            cursor.execute("SELECT nome, preco FROM cardapio WHERE id = %s AND ativo = TRUE", (cardapio_id,))
+            prato = cursor.fetchone()
+            if not prato:
+                raise Exception(f"Prato {cardapio_id} não existe ou está inativo")
+
+            cursor.execute("""
+                SELECT e.id, e.quantidade
+                FROM cardapio_ingredientes ci
+                JOIN estoque e ON ci.estoque_id = e.id
+                WHERE ci.cardapio_id = %s
+            """, (cardapio_id,))
+
+            for est_id, disp in cursor.fetchall():
+                necessario = quantidade + reservas.get(est_id, 0)
+                if necessario > disp:
+                    raise Exception("Estoque insuficiente para um ou mais ingredientes")
+                reservas[est_id] = necessario
+
+            preco_total += prato[1] * quantidade
+
+        cursor.execute("SELECT pontos FROM clientes WHERE id = %s", (cliente_id,))
+        res_pontos = cursor.fetchone()
+        pontos = res_pontos[0] if res_pontos else 0
+        desconto = pontos >= 5
+        preco_final = preco_total * Decimal("0.85") if desconto else preco_total
+
+        # 'pedidos.id' não é SERIAL — geramos o próximo id manualmente
+        cursor.execute("SELECT MAX(id) FROM pedidos")
+        maior_id = cursor.fetchone()[0]
+        id_pedido = 100 if maior_id is None else maior_id + 1
+
+        cursor.execute(
+            "INSERT INTO pedidos (id, cliente_id, valor_total, status, data_pedido) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)",
+            (id_pedido, cliente_id, preco_final, "em andamento")
+        )
+
+        for c_id, qtd in itens_pedido_lista:
+            cursor.execute("INSERT INTO pedido_itens (pedido_id, cardapio_id, quantidade) VALUES (%s, %s, %s)", (id_pedido, c_id, qtd))
+
+        for est_id, qtd_total in reservas.items():
+            cursor.execute("UPDATE estoque SET quantidade = quantidade - %s WHERE id = %s", (qtd_total, est_id))
+
+        if desconto:
+            cursor.execute("UPDATE clientes SET pontos = pontos - 5 WHERE id = %s", (cliente_id,))
+
+        conn.commit()
+        return True, id_pedido, f"Pedido {id_pedido} realizado com sucesso!"
+
+    except Exception as e:
+        conn.rollback()
+        return False, None, str(e)
+    finally:
+        cursor.close()
+        conn.close()
+
+def marcar_como_entregue_auto(pedido_id):
+    """Passa de 'em andamento' para 'feito'"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("UPDATE pedidos SET status = 'feito' WHERE id = %s", (pedido_id,))
+        conn.commit()
+        return True
+    except:
+        return False
+    finally:
+        cursor.close(); conn.close()
+
+def marcar_como_pago_auto(pedido_id):
+    """Passa de 'feito' para 'pago' e dá ponto ao cliente"""
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT cliente_id FROM pedidos WHERE id = %s", (pedido_id,))
+        res = cursor.fetchone()
+        if res:
+            cliente_id = res[0]
+            cursor.execute("UPDATE pedidos SET status = 'pago' WHERE id = %s", (pedido_id,))
+            cursor.execute("UPDATE clientes SET pontos = pontos + 1 WHERE id = %s", (cliente_id,))
+            conn.commit()
+            return True
+        return False
+    except:
+        return False
+    finally:
+        cursor.close(); conn.close()
