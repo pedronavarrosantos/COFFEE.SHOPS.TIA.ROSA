@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "CRUDs"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "GFUNCs"))
 
 import funcoes_gerais as fg
 import est_postgre_func as efun

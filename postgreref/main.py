@@ -1,8 +1,8 @@
-import clientes
-import estoque
-import pedidos
-import cardapio
-import funcoes_gerais
+import clientes_postgre as clp
+import estoque_postgre as ep
+import pedidos_postgre as pp
+import cardapio_postgre as cap
+import funcoes_gerais as fg
 
 def sistema_principal():
     while True:
@@ -15,19 +15,19 @@ def sistema_principal():
         " 5. Sair do sistema.\n")
 
         if options == "1":
-            cardapio.sistema_cardapio()
+            cap.sistema_cardapio()
         elif options == "2":
-            clientes.sistema_clientes()
+            clp.sistema_clientes()
         elif options == "3":
-            estoque.sistema_estoque()
+            ep.sistema_estoque()
         elif options == "4":
-            pedidos.sistema_pedidos()
+            pp.sistema_pedidos()
         elif options == "5":
-            funcoes_gerais.end("sistema Cafeteria Tia Rosa")
+            fg.end("sistema Cafeteria Tia Rosa")
             
             break
         else:
-            funcoes_gerais.invalid(options)
+            fg.invalid(options)
 
 if __name__ == "__main__":
     sistema_principal()
