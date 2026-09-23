@@ -1,0 +1,220 @@
+/* Importando Rubik (Moderna/Leitura) e Caveat (Manuscrita Elegante) */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;600&family=Caveat:wght@400;700&display=swap');
+
+:root {
+    --cor-fundo: #3e2723;        /* Marrom Café Escuro */
+    --cor-superficie: #4e342e;   /* Marrom para cards e tabelas */
+    --cor-primaria: #FFFFF0;     /* IVORY (Marfim) */
+    --cor-secundaria: #FFFFF0;   /* IVORY (Marfim) */
+    --cor-texto-principal: #FFFFF0; /* IVORY (Marfim) */
+    --cor-texto-secundario: #e5ddd0; /* Bege fosco para textos menores */
+    --cor-borda: #5d4037;        
+    --sombra: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+body {
+    font-family: 'Rubik', sans-serif; /* Fonte de leitura limpa */
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* BARRA DE NAVEGAÇÃO */
+.navbar {
+    background-color: #2b160d; /* Marrom quase preto */
+    width: 100%;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    box-shadow: var(--sombra);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 3px solid var(--cor-secundaria); /* LISTRA IVORY NO TOPO */
+}
+
+.navbar a {
+    font-family: 'Caveat', cursive; /* Fonte elegante manuscrita */
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--cor-texto-secundario);
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.navbar a:hover {
+    color: var(--cor-primaria);
+    background-color: #4e342e;
+}
+
+/* CONTAINER PRINCIPAL */
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Caveat', cursive; /* Fonte elegante manuscrita */
+    color: var(--cor-primaria);
+    font-weight: 700;
+    font-size: 4rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+p {
+    font-family: 'Rubik', sans-serif;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 30px;
+    font-size: 1.1rem;
+}
+
+/* MENU EM CARDS */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    background: var(--cor-superficie);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--sombra);
+    text-decoration: none;
+    color: var(--cor-texto-principal);
+    font-family: 'Caveat', cursive; /* Fonte elegante manuscrita */
+    font-weight: 700;
+    font-size: 26px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--cor-borda);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 20px var(--cor-secundaria);
+    color: var(--cor-primaria);
+    background-color: #5d4037;
+}
+
+.card-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+/* TABELAS MODERNAS DARK */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--cor-superficie);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    margin-top: 20px;
+    color: var(--cor-texto-principal);
+}
+
+th {
+    background-color: #2b160d;
+    color: var(--cor-primaria);
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 15px;
+    text-align: left;
+    border-bottom: 2px solid var(--cor-secundaria);
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--cor-borda);
+    font-family: 'Rubik', sans-serif;
+}
+
+tr:hover {
+    background-color: #5d4037;
+}
+
+/* FORMULÁRIOS MODERNOS DARK */
+form {
+    background: var(--cor-superficie);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: var(--sombra);
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+    border: 1px solid var(--cor-borda);
+}
+
+label {
+    font-family: 'Rubik', sans-serif;
+    color: var(--cor-texto-secundario);
+    font-weight: 400;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px 0;
+    background-color: var(--cor-fundo);
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: var(--cor-texto-principal);
+    font-family: 'Rubik', sans-serif;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--cor-primaria);
+    outline: none;
+}
+
+button {
+    background-color: var(--cor-secundaria);
+    color: #000; /* Texto preto para contraste máximo com Ivory */
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: var(--cor-primaria);
+    transform: scale(1.02);
+    box-shadow: 0 0 10px var(--cor-primaria);
+}
+
+/* BOTÕES DE AÇÃO (Editar/Excluir) */
+.btn-action {
+    font-family: 'Rubik', sans-serif;
+    color: var(--cor-primaria);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.btn-action:hover {
+    text-decoration: underline;
+    color: var(--cor-texto-secundario);
+}
