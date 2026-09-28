@@ -138,15 +138,12 @@ def media_valor_por_dia():
     print("\n" + "="*40)
     print("   TICKET MÉDIO POR DIA DA SEMANA")
     print("="*40)
-    
-    # Mapeamento para tradução e para garantir a ordem correta (Domingo a Sábado)
-    # A chave é o número retornado pelo EXTRACT(DOW FROM ...) do Postgres
+
     dias_semana = {
         0: 'Domingo', 1: 'Segunda', 2: 'Terça', 
         3: 'Quarta', 4: 'Quinta', 5: 'Sexta', 6: 'Sábado'
     }
-    
-    # Query: Agrupamos pelo número do dia da semana (DOW) e calculamos a média
+
     query = """
         SELECT 
             EXTRACT(DOW FROM data_pedido) as dia_num, 
@@ -157,11 +154,9 @@ def media_valor_por_dia():
     """
     cursor.execute(query)
     resultados = cursor.fetchall()
-    
-    # Transformamos o resultado em um dicionário {numero_do_dia: valor_da_media}
+
     dados_medias = {dia_num: media for dia_num, media in resultados}
-    
-    # Agora percorremos o nosso dicionário de dias_semana para imprimir na ordem certa
+
     for num, nome in dias_semana.items():
         media = dados_medias.get(num)
         if media is not None:
@@ -171,6 +166,52 @@ def media_valor_por_dia():
             
     cursor.close()
     conn.close()
+
+def obter_resumo_financeiro():
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Soma o valor total de todos os pedidos pagos
+    cursor.execute("SELECT SUM(valor_total) FROM pedidos WHERE status = 'pago'")
+    total = cursor.fetchone()[0] or 0
+    
+    # Conta quantos pedidos foram feitos no total
+    cursor.execute("SELECT COUNT(*) FROM pedidos")
+    qtd_pedidos = cursor.fetchone()[0]
+    
+    cursor.close()
+    conn.close()
+    return {"faturamento": float(total), "total_pedidos": qtd_pedidos}
+
+def obter_produtos_mais_vendidos():
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Junta a tabela de itens do pedido com a do cardápio para saber o nome do produto
+    sql = """
+        SELECT c.nome, SUM(pi.quantidade) as total_vendido 
+        FROM pedido_itens pi 
+        JOIN cardapio c ON pi.cardapio_id = c.id 
+        GROUP BY c.nome 
+        ORDER BY total_vendido DESC 
+        LIMIT 5
+    """
+    cursor.execute(sql)
+    dados = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return dados
+
+def obter_clientes_fiéis():
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Busca os clientes com mais pontos de fidelidade
+    cursor.execute("SELECT nome, pontos FROM clientes ORDER BY pontos DESC LIMIT 5")
+    dados = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return dados
 
 def menu_estatisticas():
     while True:

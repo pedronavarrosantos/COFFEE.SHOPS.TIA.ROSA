@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <a href="/" class="btn-voltar-topo">⬅ Voltar para o Menu Principal</a>
+        
+        <h1>📊 Relatórios de Gestão</h1>
+        
+        <!-- INDICADORES PRINCIPAIS -->
+        <div class="menu-grid" style="margin-bottom: 40px;">
+            <div class="card">
+                <div class="card-icon">💰</div>
+                <span style="font-size: 14px; color: var(--cor-texto-secundario);">Faturamento Total</span>
+                <span style="font-size: 32px; color: var(--cor-primaria);">R$ {{ "%.2f"|format(resumo.faturamento) }}</span>
+            </div>
+            <div class="card">
+                <div class="card-icon">📈</div>
+                <span style="font-size: 14px; color: var(--cor-texto-secundario);">Total de Pedidos</span>
+                <span style="font-size: 32px; color: var(--cor-primaria);">{{ resumo.total_pedidos }}</span>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+            <!-- LISTA: PRODUTOS MAIS VENDIDOS -->
+            <div>
+                <h2 style="font-family: 'Caveat', cursive; color: var(--cor-primaria); font-size: 2rem;">🏆 Mais Vendidos</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Qtd. Vendida</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prod in mais_vendidos %}
+                        <tr>
+                            <td>{{ prod[0] }}</td>
+                            <td style="text-align: center;">{{ prod[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- LISTA: CLIENTES FIÉIS -->
+            <div>
+                <h2 style="font-family: 'Caveat', cursive; color: var(--cor-primaria); font-size: 2rem;">🌟 Clientes VIP</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Pontos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in clientes_top %}
+                        <tr>
+                            <td>{{ cliente[0] }}</td>
+                            <td style="text-align: center;">{{ cliente[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

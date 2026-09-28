@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Shop Tia Rosa</title>
+    <title>Coffee Shop Tia Rosa - Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <!-- BARRA DE NAVEGAÇÃO (Sempre visível no topo) -->
+    <!-- BARRA DE NAVEGAÇÃO -->
     <nav class="navbar">
         <a href="/">🏠 Início</a>
         <a href="/cardapio">☕ Cardápio</a>
@@ -18,38 +18,97 @@
         <a href="/relatorios">📊 Relatórios</a>
     </nav>
 
-    <div class="container">
-        <h1>☕ Coffee Shop Tia Rosa</h1>
-        <p>Selecione o módulo que deseja gerenciar</p>
+    <!-- CONTAINER PRINCIPAL - Guardamos a lista de alertas aqui para evitar erro no VS Code -->
+    <div class="container" id="dashboard-container" data-alertas='{{ itens_alerta | tojson }}'>
         
-        <!-- MENU EM CARDS -->
-        <div class="menu-grid">
-            <a href="/cardapio" class="card">
-                <div class="card-icon">☕</div>
-                <span>Cardápio</span>
-            </a>
-            
-            <a href="/clientes" class="card">
-                <div class="card-icon">👥</div>
-                <span>Clientes</span>
-            </a>
-            
-            <a href="/estoque" class="card">
-                <div class="card-icon">📦</div>
-                <span>Estoque</span>
-            </a>
-            
-            <a href="/pedidos" class="card">
-                <div class="card-icon">📝</div>
-                <span>Pedidos</span>
-            </a>
-            
-            <a href="/relatorios" class="card">
-                <div class="card-icon">📊</div>
-                <span>Relatórios</span>
-            </a>
+        <!-- SEÇÃO HERO -->
+        <div class="hero" style="text-align: center; padding: 40px 20px; background: rgba(0,0,0,0.2); border-radius: 20px; margin-bottom: 40px;">
+            <h1>☕ Coffee Shop Tia Rosa</h1>
+            <p>Painel de Controle de Gestão</p>
+        </div>
+
+        <!-- ALERTA DE ESTOQUE BAIXO (SÓ APARECE SE HOUVER ITENS EM BAIXA) -->
+        {% if aviso_estoque %}
+        <div class="aviso-estoque" style="margin-bottom: 30px;">
+            ⚠️ Atenção: Existem ingredientes com quantidade baixa no estoque!
+            <a href="/estoque" class="btn-aviso">Verificar Agora</a>
+        </div>
+        {% endif %}
+
+        <!-- INDICADORES RÁPIDOS (Dashboard) -->
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <span>💰 Faturamento Total</span>
+                <strong>R$ {{ "%.2f"|format(resumo.faturamento) }}</strong>
+            </div>
+            <div class="stat-card">
+                <span>📈 Pedidos Ativos</span>
+                <strong style="color: #ffeb3b;">{{ pedidos_andamento }}</strong>
+            </div>
+            <div class="stat-card">
+                <span id="alerta-label">🚨 Item Crítico</span>
+                <strong id="texto-alerta" style="color: #ff4444;">
+                    {% if itens_alerta %}
+                        {{ itens_alerta[0][0] }} ({{ itens_alerta[0][1] }} un)
+                    {% else %}
+                        Nenhum
+                    {% endif %}
+                </strong>
+            </div>
+        </div>
+
+        <!-- AÇÕES RÁPIDAS -->
+        <h2 style="font-family: 'Caveat', cursive; color: var(--cor-primaria); font-size: 2.5rem; margin-top: 50px; margin-bottom: 20px;">Ações Rápidas</h2>
+        <div class="quick-actions">
+            <a href="/novo_pedido" class="btn-quick">🚀 Novo Pedido</a>
+            <a href="/adicionar_ingrediente" class="btn-quick">📦 Novo Ingrediente</a>
+            <a href="/adicionar_cliente" class="btn-quick">👥 Novo Cliente</a>
         </div>
     </div>
+
+    <!-- SCRIPT DE CARROSSEL DE ALERTAS -->
+    <script>
+        // 1. Pegamos os dados do atributo 'data-alertas' do container
+        const container = document.getElementById('dashboard-//container'); // Erro aqui, corrigindo para 'dashboard-container'
+        
+        // CORREÇÃO FINAL ABAIXO PARA O SCRIPT:
+    </script>
+
+    <script>
+        // Versão Corrigida do Script
+        (function() {
+            const container = document.getElementById('dashboard-container');
+            const rawData = container.getAttribute('data-alertas');
+            const itensAlerta = JSON.parse(rawData);
+            let indiceAtual = 0;
+
+            function atualizarAlerta() {
+                if (!itensAlerta || itensAlerta.length === 0) return;
+
+                const elementoTexto = document.getElementById('texto-alerta');
+                const elementoLabel = document.getElementById('alerta-label');
+                
+                const item = itensAlerta[indiceAtual];
+                const nome = item[0];
+                const qtd = item[1];
+
+                // Lógica de Cores e Labels
+                if (qtd <= 50) {
+                    elementoTexto.style.color = '#ff4444'; // Vermelho Crítico
+                    elementoLabel.innerText = '🚨 Nível Crítico';
+                } else {
+                    elementoTexto.style.color = '#ffeb3b'; // Amarelo Médio
+                    elementoLabel.innerText = '⚠️ Nível Médio';
+                }
+
+                elementoTexto.innerText = `${nome} (${qtd} un)`;
+                indiceAtual = (indiceAtual + 1) % itensAlerta.length;
+            }
+
+            // Inicia o carrossel a cada 3 segundos
+            setInterval(atualizarAlerta, 3000);
+        })();
+    </script>
 
 </body>
 </html>

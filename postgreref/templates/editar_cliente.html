@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h1>👥 Editar Dados do Cliente</h1>
+        
+        <form action="/atualizar_cliente" method="POST">
+            <!-- Campo invisível para saber QUAL cliente estamos editando -->
+            <input type="hidden" name="id" value="{{ cliente[0] }}">
+
+            <label>Nome Completo:</label>
+            <input type="text" name="nome" value="{{ cliente[1] }}" required>
+            
+            <label>Telefone:</label>
+            <input type="text" name="telefone" value="{{ cliente[2] }}" required>
+            
+            <label>E-mail:</label>
+            <input type="email" name="email" value="{{ cliente[3] }}" required>
+            
+            <label>CPF:</label>
+            <input type="text" name="cpf" value="{{ cliente[4] }}" required>
+            
+            <label>Pontos de Fidelidade:</label>
+            <input type="number" name="pontos" value="{{ cliente[5] }}" required>
+            
+            <label>Idade:</label>
+            <input type="number" name="idade" value="{{ cliente[6] }}" required>
+            
+            <button type="submit">✨ Salvar Alterações</button>
+        </form>
+        
+        <br>
+        <a href="/clientes" style="color: var(--cor-primaria); text-decoration: none;">⬅ Voltar para a Lista</a>
+    </div>
+
+</body>
+</html>

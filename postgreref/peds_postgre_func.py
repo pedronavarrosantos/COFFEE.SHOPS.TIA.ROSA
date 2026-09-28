@@ -591,3 +591,89 @@ def marcar_como_pago_auto(pedido_id):
         return False
     finally:
         cursor.close(); conn.close()
+
+# --- FUNÇÕES PARA O FLASK ---
+
+def obter_todos_pedidos(ordenar_por='p.id', direcao='DESC'):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    mapeamento = {
+        'id': 'p.id',
+        'cliente': 'c.nome',
+        'valor': 'p.valor_total',
+        'status': 'p.status',
+        'data': 'p.data_pedido'
+    }
+
+    coluna_sql = mapeamento.get(ordenar_por, 'p.id')
+    direcao = 'ASC' if direcao.upper() == 'ASC' else 'DESC'
+
+    sql = f"""
+        SELECT p.id, c.nome, p.valor_total, p.status, p.data_pedido 
+        FROM pedidos p 
+        JOIN clientes c ON p.cliente_id = c.id 
+        ORDER BY {coluna_sql} {direcao}
+    """
+    
+    cursor.execute(sql)
+    pedidos = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return pedidos
+
+
+def obter_detalhes_pedido(pedido_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    # Busca os itens do pedido e os nomes dos pratos
+    sql = """
+        SELECT pi.quantidade, c.nome, c.preco 
+        FROM pedido_itens pi 
+        JOIN cardapio c ON pi.cardapio_id = c.id 
+        WHERE pi.pedido_id = %s
+    """
+    cursor.execute(sql, (pedido_id,))
+    itens = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return itens
+
+def obter_info_geral_pedido(pedido_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    sql = """
+        SELECT p.id, c.nome, p.valor_total, p.status, p.data_pedido 
+        FROM pedidos p 
+        JOIN clientes c ON p.cliente_id = c.id 
+        WHERE p.id = %s
+    """
+    cursor.execute(sql, (pedido_id,))
+    pedido = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return pedido
+
+def obter_itens_do_pedido(pedido_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    sql = """
+        SELECT pi.quantidade, c.nome, c.preco 
+        FROM pedido_itens pi 
+        JOIN cardapio c ON pi.cardapio_id = c.id 
+        WHERE pi.pedido_id = %s
+    """
+    cursor.execute(sql, (pedido_id,))
+    itens = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return itens
+
+def obter_qtd_andamento():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM pedidos WHERE status = 'em andamento'")
+    qtd = cursor.fetchone()[0]
+    cursor.close()
+    conn.close()
+    return qtd

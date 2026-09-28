@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Pedido - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <a href="/pedidos" class="btn-voltar-topo">⬅ Voltar para a Lista de Pedidos</a>
+        
+        <h1>📝 Novo Pedido</h1>
+        
+        <form action="/finalizar_pedido" method="POST">
+            <!-- SELEÇÃO DO CLIENTE -->
+            <div style="background: var(--cor-superficie); padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: var(--sombra); border: 1px solid var(--cor-borda); text-align: left;">
+                <label style="font-size: 1.2rem; font-weight: bold;">👤 Selecione o Cliente:</label>
+                <select name="cliente_id" required style="width: 100%; padding: 12px; margin-top: 10px; background: var(--cor-fundo); color: var(--cor-texto-principal); border: 1px solid var(--cor-borda); border-radius: 8px; font-family: 'Rubik', sans-serif;">
+                    <option value="" disabled selected>-- Escolha um cliente --</option>
+                    {% for cliente in clientes %}
+                        <option value="{{ cliente[0] }}">{{ cliente[1] }} (Pontos: {{ cliente[5] }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- SELEÇÃO DE PRODUTOS -->
+            <h2 style="font-family: 'Caveat', cursive; color: var(--cor-primaria); font-size: 2rem; margin-bottom: 20px;">Escolha os Produtos:</h2>
+            
+            <table style="margin-bottom: 30px;">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Preço</th>
+                        <th style="width: 150px;">Quantidade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prato in pratos %}
+                    <tr>
+                        <td style="text-align: left;">{{ prato[1] }}</td>
+                        <td style="text-align: center;">R$ {{ prato[2] }}</td>
+                        <td style="text-align: center;">
+                            <!-- Enviamos o ID do prato escondido e a quantidade visível -->
+                            <input type="hidden" name="prato_id[]" value="{{ prato[0] }}">
+                            <input type="number" name="qtd[]" value="0" min="0" style="width: 80px; text-align: center; margin: 0;">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" style="font-size: 20px; padding: 15px;">🚀 Finalizar e Baixar Estoque</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Ingrediente - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h1>📦 Cadastrar Novo Ingrediente</h1>
+        
+        <form action="/salvar_ingrediente" method="POST">
+            <label>Nome do Ingrediente:</label>
+            <input type="text" name="nome" placeholder="Ex: Café em Grãos" required>
+            
+            <label>Quantidade Inicial:</label>
+            <input type="number" name="quantidade" placeholder="Ex: 50" required min="0">
+            
+            <button type="submit">✨ Salvar no Estoque</button>
+        </form>
+        
+        <br>
+        <a href="/estoque" style="color: var(--cor-primaria); text-decoration: none;">⬅ Voltar para o Estoque</a>
+    </div>
+
+</body>
+</html>

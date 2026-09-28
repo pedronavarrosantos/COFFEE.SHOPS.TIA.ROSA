@@ -2,29 +2,47 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Prato - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>☕ Editar Prato do Cardápio</h1>
-    
-    <!-- O 'action' agora envia para a rota de atualizar -->
-    <form action="/atualizar_prato" method="POST">
-        <!-- Campo invisível para guardar o ID do prato e saber qual atualizar -->
-        <input type="hidden" name="id" value="{{ prato[0] }}">
 
-        <label>Nome do Prato:</label><br>
-        <input type="text" name="nome" value="{{ prato[1] }}" required><br><br>
+    <!-- BARRA DE NAVEGAÇÃO (Padronizada) -->
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <!-- LINK DE VOLTAR NO TOPO -->
+        <a href="/cardapio" class="btn-voltar-topo">⬅ Voltar para o Cardápio</a>
         
-        <label>Preço:</label><br>
-        <input type="number" step="0.01" name="preco" value="{{ prato[2] }}" required><br><br>
+        <h1>✏️ Editar Informações do Prato</h1>
         
-        <label>Descrição:</label><br>
-        <textarea name="descricao" required>{{ prato[3] }}</textarea><br><br>
+        <form action="/atualizar_prato" method="POST">
+            <!-- Campo invisível para saber qual prato atualizar -->
+            <input type="hidden" name="id" value="{{ prato[0] }}">
+
+            <label>Nome do Prato:</label>
+            <input type="text" name="nome" value="{{ prato[1] }}" required>
+            
+            <label>Preço (R$):</label>
+            <input type="number" step="0.01" name="preco" value="{{ prato[2] }}" required>
+            
+            <label>Descrição:</label>
+            <textarea name="descricao" required>{{ prato[3] }}</textarea>
+            
+            <button type="submit">✨ Salvar Alterações</button>
+        </form>
         
-        <button type="submit">Salvar Alterações</button>
-    </form>
-    
-    <br>
-    <a href="/cardapio">⬅ Voltar para o Cardápio</a>
+        <br>
+        <a href="/cardapio" style="color: var(--cor-primaria); text-decoration: none;">⬅ Voltar para a Lista</a>
+    </div>
+
 </body>
 </html>

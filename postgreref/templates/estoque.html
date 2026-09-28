@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h1>📦 Gestão de Estoque</h1>
+        
+        <!-- FILTROS DE NÍVEL -->
+        <div style="margin-bottom: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+            <a href="/estoque" class="btn-action" style="background: var(--cor-borda);">Todos</a>
+            <a href="/estoque?nivel=critico" class="btn-action" style="background: #8b0000; color: white !important; border-color: #ff0000;">🔴 Crítico (<=50)</a>
+            <a href="/estoque?nivel=medio" class="btn-action" style="background: #b8860b; color: white !important; border-color: #ffd700;">🟡 Médio (51-100)</a>
+            <a href="/estoque?nivel=seguro" class="btn-action" style="background: #2e7d32; color: white !important; border-color: #4caf50;">🟢 Seguro (>100)</a>
+        </div>
+
+        <a href="/adicionar_ingrediente" class="btn-add">➕ Adicionar Ingrediente</a>
+        
+        <table>
+                        <thead style="text-align: center;">
+                <tr style="text-align: center;">
+                    <th>
+                        <a href="/estoque?sort=id&dir={{ 'DESC' if sort == 'id' and dir == 'ASC' else 'ASC' }}&nivel={{ nivel_ativo if nivel_ativo else '' }}" style="color: var(--cor-primaria); text-decoration: none;">
+                            ID {% if sort == 'id' %}{{ '▲' if dir == 'ASC' else '▼' }}{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="/estoque?sort=ingrediente&dir={{ 'DESC' if sort == 'ingrediente' and dir == 'ASC' else 'ASC' }}&nivel={{ nivel_ativo if nivel_ativo else '' }}" style="color: var(--cor-primaria); text-decoration: none;">
+                            Ingrediente {% if sort == 'ingrediente' %}{{ '▲' if dir == 'ASC' else '▼' }}{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="/estoque?sort=quantidade&dir={{ 'DESC' if sort == 'quantidade' and dir == 'ASC' else 'ASC' }}&nivel={{ nivel_ativo if nivel_ativo else '' }}" style="color: var(--cor-primaria); text-decoration: none;">
+                            Quantidade {% if sort == 'quantidade' %}{{ '▲' if dir == 'ASC' else '▼' }}{% endif %}
+                        </a>
+                    </th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in estoque %}
+                <tr>
+                    <td style="text-align: center;">{{ item[0] }}</td>
+                    <td>{{ item[1] }}</td>
+                    <td style="text-align: center; font-weight: bold;">
+                        {{ item[2] }}
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="/editar_estoque/{{ item[0] }}" class="btn-action">✏️ Atualizar Qtd</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <a href="/" style="color: var(--cor-primaria); text-decoration: none;">⬅ Voltar para o Menu Principal</a>
+    </div>
+
+</body>
+</html>

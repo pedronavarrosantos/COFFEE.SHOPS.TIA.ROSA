@@ -95,7 +95,7 @@ def processar_cliente_ia():
         
         prompt_novo = (
             f"{LORE_MORALTOWN}\n"
-            f"Crie um novo cliente {persona}. Invente: Nome, Idade, CPF, Email, Tel. Não repita nomes e alterne bem entre nomes masculinos e femininos\n"
+            f"Crie um novo cliente {persona}. Invente: Nome, Idade, CPF, Email, Tel. NUNCA repita nomes e alterne bem entre nomes masculinos e femininos\n"
             f"IMPORTANTE: gere um número de celular brasileiro plausível e variado (formato DDXXXXXXXXX, 11 dígitos), "
             f"NUNCA use números de exemplo repetidos como 11987654321 ou sequências óbvias.\n"
             f"Responda APENAS em JSON: {{\"nome\": \"\", \"idade\": 0, \"cpf\": \"\", \"email\": \"\", \"tel\": \"\", \"pedido\": [[id, qtd]]}}\n"

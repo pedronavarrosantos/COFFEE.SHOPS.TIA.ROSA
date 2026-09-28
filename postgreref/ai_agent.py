@@ -1,5 +1,6 @@
 from google import genai
 import json
+import os
 import random
 from db_connection_2 import get_connection
 import peds_postgre_func as pfun

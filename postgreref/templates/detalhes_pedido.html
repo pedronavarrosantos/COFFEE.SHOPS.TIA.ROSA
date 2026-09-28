@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Pedido - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <a href="/pedidos" class="btn-voltar-topo">⬅ Voltar para a Lista de Pedidos</a>
+        
+        <h1>📄 Detalhes do Pedido #{{ pedido[0] }}</h1>
+        
+        <!-- CABEÇALHO DO PEDIDO -->
+        <div style="background: var(--cor-superficie); padding: 20px; border-radius: 15px; margin-bottom: 30px; box-shadow: var(--sombra); border: 1px solid var(--cor-borda); text-align: left; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <p style="margin: 0; color: var(--cor-texto-secundario);">Cliente:</p>
+                <strong style="font-size: 1.2rem; color: var(--cor-primaria);">{{ pedido[1] }}</strong>
+            </div>
+            <div>
+                <p style="margin: 0; color: var(--cor-texto-secundario);">Data/Hora:</p>
+                <strong style="font-size: 1.2rem; color: var(--cor-primaria);">{{ pedido[4] }}</strong>
+            </div>
+            <div>
+                <p style="margin: 0; color: var(--cor-texto-secundario);">Status:</p>
+                <strong style="font-size: 1.2rem; color: var(--cor-primaria);">{{ pedido[3] }}</strong>
+            </div>
+            <div>
+                <p style="margin: 0; color: var(--cor-texto-secundario);">Valor Total:</p>
+                <strong style="font-size: 1.5rem; color: var(--cor-primaria);">R$ {{ "%.2f"|format(pedido[2]) }}</strong>
+            </div>
+        </div>
+
+        <h2 style="font-family: 'Caveat', cursive; color: var(--cor-primaria); font-size: 2rem; margin-bottom: 20px;">Itens do Pedido</h2>
+        
+        <table>
+            <thead style="text-align: center;">
+                <tr style="text-align: center;">
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unit.</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody style="text-align: center;">
+                {% for item in itens %}
+                <tr>
+                    <td style="text-align: left;">{{ item[1] }}</td>
+                    <td>{{ item[0] }}</td>
+                    <td>R$ {{ "%.2f"|format(item[2]) }}</td>
+                    <td>R$ {{ "%.2f"|format(item[0] * item[2]) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

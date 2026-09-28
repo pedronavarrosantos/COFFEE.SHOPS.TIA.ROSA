@@ -2,41 +2,82 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardápio - Coffee Shop Tia Rosa</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>☕ Cardápio de Produtos</h1>
-    <a href="/adicionar_prato">➕ Adicionar Novo Prato</a>
-    <br><br>
-    
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Preço</th>
-                <th>Descrição</th>
-                <th>Ações</th> <!-- Nova Coluna -->
-            </tr>
-        </thead>
-        <tbody>
-            {% for prato in pratos %}
-            <tr>
-                <td>{{ prato[0] }}</td>
-                <td>{{ prato[1] }}</td>
-                <td>R$ {{ prato[2] }}</td>
-                <td>{{ prato[3] }}</td>
-                <td>
-                    <a href="/editar_prato/{{ prato[0] }}">✏️ Editar</a> | 
-                    <a href="/deletar_prato/{{ prato[0] }}" onclick="return confirm('Tem certeza que deseja remover este prato?')">❌ Excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 
-    <br>
-    <a href="/">⬅ Voltar para o Menu Principal</a>
+    <!-- BARRA DE NAVEGAÇÃO -->
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <!-- LINK DE VOLTAR NO TOPO -->
+        <a href="/" class="btn-voltar-topo">⬅ Voltar para o Menu Principal</a>
+        
+        <h1>☕ Cardápio de Produtos</h1>
+        
+        <!-- BOTÃO DE ADICIONAR MODERNO -->
+        <a href="/adicionar_prato" class="btn-add">➕ Adicionar Novo Prato</a>
+        
+        <table>
+                        <thead style="text-align: center;">
+                <tr style="text-align: center;">
+                    <th>
+                        <a href="/cardapio?sort=id&dir={{ 'DESC' if sort == 'id' and dir == 'ASC' else 'ASC' }}" style="color: var(--cor-primaria); text-decoration: none;">
+                            ID {% if sort == 'id' %}{{ '▲' if dir == 'ASC' else '▼' }}{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="/cardapio?sort=nome&dir={{ 'DESC' if sort == 'nome' and dir == 'ASC' else 'ASC' }}" style="color: var(--cor-primaria); text-decoration: none;">
+                            Nome {% if sort == 'nome' %}{{ '▲' if dir == 'ASC' else '▼' }}{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="/cardapio?sort=preco&dir={{ 'DESC' if sort == 'preco' and dir == 'ASC' else 'ASC' }}" style="color: var(--cor-primaria); text-decoration: none;">
+                            Preço {% if sort == 'preco' %}{{ '▲' if dir == 'ASC' else '▼' }}{% endif %}
+                        </a>
+                    </th>
+                    <th>
+                        <a href="/cardapio?sort=descricao&dir={{ 'DESC' if sort == 'descricao' and dir == 'ASC' else 'ASC' }}" style="color: var(--cor-primaria); text-decoration: none;">
+                            Descrição {% if sort == 'descricao' %}{{ '▲' if dir == 'ASC' else '▼' }}{% endif %}
+                        </a>
+                    </th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+                        <tbody>
+                {% for prato in pratos %}
+                <!-- Se prato[4] (ativo) for False, aplica a classe row-inactive -->
+                <tr class="{{ 'row-inactive' if not prato[4] else '' }}">
+                    <td style="text-align: center;">{{ prato[0] }}</td>
+                    <td>
+                        {{ prato[1] }} 
+                        {% if not prato[4] %}
+                            <span class="badge-inativo">Inativo</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">R$ {{ prato[2] }}</td>
+                    <td>{{ prato[3] }}</td>
+                    <td style="text-align: center;">
+                        <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
+                            <a href="/editar_prato/{{ prato[0] }}" class="btn-action">✏️ Editar</a>
+                            <a href="/deletar_prato/{{ prato[0] }}" class="btn-action" onclick="return confirm('Tem certeza que deseja remover este prato?')">❌ Excluir</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
 </body>
 </html>

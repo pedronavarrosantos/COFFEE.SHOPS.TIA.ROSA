@@ -264,3 +264,91 @@ def adicionar_cliente_automatico(nome, telefone, email, cpf, idade):
         return False, str(e)
     finally:
         cursor.close(); conn.close()
+
+# --- FUNÇÕES PARA O FLASK ---
+
+def obter_todos_clientes():
+    conn = get_connection()
+    cursor = conn.cursor()
+    # Buscamos apenas os ativos para a listagem principal
+    cursor.execute("SELECT id, nome, telefone, email, cpf, pontos, idade FROM clientes WHERE ativo = TRUE ORDER BY id")
+    clientes = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return clientes
+
+def obter_cliente_por_id(cliente_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, nome, telefone, email, cpf, pontos, idade FROM clientes WHERE id = %s", (cliente_id,))
+    cliente = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return cliente
+
+def salvar_cliente_db(nome, telefone, email, cpf, idade):
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Lógica de ID automático
+    cursor.execute("SELECT MAX(id) FROM clientes")
+    maior_id = cursor.fetchone()[0]
+    userID = 1 if maior_id is None else maior_id + 1
+    
+    cursor.execute(
+        "INSERT INTO clientes (id, nome, telefone, email, cpf, pontos, idade) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+        (userID, nome, telefone, email, cpf, 0, idade)
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return userID
+
+def atualizar_cliente_db(cliente_id, nome, telefone, email, cpf, pontos, idade):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE clientes SET nome = %s, telefone = %s, email = %s, cpf = %s, pontos = %s, idade = %s WHERE id = %s",
+        (nome, telefone, email, cpf, pontos, idade, cliente_id)
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def deletar_cliente_db(cliente_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE clientes SET ativo = FALSE WHERE id = %s", (cliente_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def filtrar_clientes(termo=None, idade=None, ordenar_por='id', direcao='ASC'):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    colunas_permitidas = ['id', 'nome', 'telefone', 'email', 'cpf', 'pontos', 'idade']
+    if ordenar_por not in colunas_permitidas:
+        ordenar_por = 'id'
+
+    direcao = 'ASC' if direcao.upper() == 'ASC' else 'DESC'
+
+    sql = "SELECT id, nome, telefone, email, cpf, pontos, idade FROM clientes WHERE ativo = TRUE"
+    params = []
+
+    if termo:
+        sql += " AND (nome LIKE %s OR email LIKE %s OR cpf LIKE %s)"
+        filtro = f"%{termo}%"
+        params.extend([filtro, filtro, filtro])
+
+    if idade:
+        sql += " AND idade = %s"
+        params.append(idade)
+
+    sql += f" ORDER BY {ordenar_por} {direcao}"
+    
+    cursor.execute(sql, tuple(params))
+    clientes = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return clientes

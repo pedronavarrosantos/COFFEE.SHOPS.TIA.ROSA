@@ -325,10 +325,27 @@ def reativar():
 
         print(f"== Prato {prato[1]} reativado. ==\n")
 
-def obter_todos_pratos():
+def obter_todos_pratos(ordenar_por='id', direcao='ASC', apenas_ativos=False):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, nome, preco, descricao FROM cardapio WHERE ativo = TRUE ORDER by id")
+    
+    colunas_permitidas = ['id', 'nome', 'preco', 'descricao']
+    if ordenar_por not in colunas_permitidas:
+        ordenar_por = 'id'
+        
+    direcao = 'ASC' if direcao.upper() == 'ASC' else 'DESC'
+    
+    # Montamos a query base
+    sql = "SELECT id, nome, preco, descricao, ativo FROM cardapio"
+    
+    # SE apenas_ativos for True, adicionamos o filtro WHERE
+    if apenas_ativos:
+        sql += " WHERE ativo = TRUE"
+        
+    # Adicionamos a ordenação ao final
+    sql += f" ORDER BY {ordenar_por} {direcao}"
+    
+    cursor.execute(sql)
     pratos = cursor.fetchall()
     cursor.close()
     conn.close()

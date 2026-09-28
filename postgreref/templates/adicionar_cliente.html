@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Cliente - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <h1>👥 Cadastrar Novo Cliente</h1>
+        
+        <form action="/salvar_cliente" method="POST">
+            <label>Nome Completo:</label>
+            <input type="text" name="nome" placeholder="Ex: João Silva" required>
+            
+            <label>Telefone:</label>
+            <input type="text" name="telefone" placeholder="Ex: 11999999999" required>
+            
+            <label>E-mail:</label>
+            <input type="email" name="email" placeholder="exemplo@email.com" required>
+            
+            <label>CPF (apenas números):</label>
+            <input type="text" name="cpf" placeholder="12345678901" required>
+            
+            <label>Idade:</label>
+            <input type="number" name="idade" placeholder="Ex: 25" required>
+            
+            <button type="submit">✨ Salvar Cliente</button>
+        </form>
+        
+        <br>
+        <a href="/clientes" style="color: var(--cor-primaria); text-decoration: none;">⬅ Voltar para a Lista</a>
+    </div>
+
+</body>
+</html>

@@ -177,3 +177,100 @@ def showIng():
         print(f"{id_}. {ingrediente}; Quantidade: {quantidade}.")
     cursor.close()
     conn.close()
+
+def verificar_estoque_baixo():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM estoque WHERE quantidade < 50")
+    quantidade_em_baixa = cursor.fetchone()[0]
+    
+    cursor.close()
+    conn.close()
+
+    return quantidade_em_baixa > 0
+
+# --- FUNÇÕES PARA O FLASK ---
+
+def obter_ingrediente_por_id(ing_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, ingrediente, quantidade FROM estoque WHERE id = %s", (ing_id,))
+    item = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return item
+
+def salvar_ingrediente_db(nome, quantidade):
+    conn = get_connection()
+    cursor = conn.cursor()
+    
+    # Lógica de ID automático
+    cursor.execute("SELECT MAX(id) FROM estoque")
+    maior_id = cursor.fetchone()[0]
+    novo_id = 1 if maior_id is None else maior_id + 1
+    
+    cursor.execute(
+        "INSERT INTO estoque (id, ingrediente, quantidade) VALUES (%s, %s, %s)",
+        (novo_id, nome, quantidade)
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return novo_id
+
+def atualizar_estoque_db(ing_id, quantidade):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE estoque SET quantidade = %s WHERE id = %s", (quantidade, ing_id))
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+def filtrar_estoque(nivel=None, ordenar_por='ingrediente', direcao='ASC'):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    colunas_permitidas = ['id', 'ingrediente', 'quantidade']
+    if ordenar_por not in colunas_permitidas:
+        ordenar_por = 'ingrediente'
+        
+    direcao = 'ASC' if direcao.upper() == 'ASC' else 'DESC'
+
+    sql = "SELECT id, ingrediente, quantidade FROM estoque WHERE 1=1"
+    params = []
+
+    if nivel == 'critico':
+        sql += " AND quantidade <= 50"
+    elif nivel == 'medio':
+        sql += " AND quantidade BETWEEN 51 AND 100"
+    elif nivel == 'seguro':
+        sql += " AND quantidade > 100"
+
+    sql += f" ORDER BY {ordenar_por} {direcao}"
+    
+    cursor.execute(sql, tuple(params))
+    itens = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return itens
+
+def obter_item_mais_critico():
+    conn = get_connection()
+    cursor = conn.cursor()
+    # Buscamos apenas NOME e QUANTIDADE
+    cursor.execute("SELECT ingrediente, quantidade FROM estoque ORDER BY quantidade ASC LIMIT 1")
+    item = cursor.fetchone()
+    cursor.close()
+    conn.close()
+    return item # Retorna (nome, quantidade)
+
+def obter_lista_alertas():
+    conn = get_connection()
+    cursor = conn.cursor()
+    # Busca todos os itens com menos de 100 unidades (Crítico e Médio)
+    cursor.execute("SELECT ingrediente, quantidade FROM estoque WHERE quantidade <= 100 ORDER BY quantidade ASC")
+    itens = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return itens # Retorna uma lista de tuplas: [('Café', 20), ('Leite', 60), ...]

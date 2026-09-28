@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Estoque - Coffee Shop Tia Rosa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">🏠 Início</a>
+        <a href="/cardapio">☕ Cardápio</a>
+        <a href="/clientes">👥 Clientes</a>
+        <a href="/estoque">📦 Estoque</a>
+        <a href="/pedidos">📝 Pedidos</a>
+        <a href="/relatorios">📊 Relatórios</a>
+    </nav>
+
+    <div class="container">
+        <a href="/" class="btn-voltar-topo">⬅ Voltar para o Menu Principal</a>
+        
+        <h1>📦 Atualizar Quantidade</h1>
+        
+        <form action="/atualizar_estoque" method="POST">
+            <!-- Campo invisível para saber qual ingrediente atualizar -->
+            <input type="hidden" name="id" value="{{ item[0] }}">
+
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-size: 1.5rem; font-weight: bold; color: var(--cor-primaria);">
+                    Ingrediente: {{ item[1] }}
+                </p>
+            </div>
+
+            <label>Nova Quantidade Disponível:</label>
+            <input type="number" name="quantidade" value="{{ item[2] }}" placeholder="Digite a quantidade" required min="0">
+            
+            <button type="submit">✨ Atualizar Estoque</button>
+        </form>
+        
+        <br>
+        <a href="/estoque" style="color: var(--cor-primaria); text-decoration: none;">⬅ Voltar para a Lista de Estoque</a>
+    </div>
+
+</body>
+</html>
